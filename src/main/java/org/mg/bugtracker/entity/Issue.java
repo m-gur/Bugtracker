@@ -21,10 +21,13 @@ public class Issue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer issueId;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Enumerated(EnumType.STRING)
     private Priority priority;
 
+    @Enumerated(EnumType.STRING)
     private Type type;
 
     private String name;

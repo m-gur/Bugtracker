@@ -26,8 +26,10 @@ public class IssueLog {
     @ManyToOne
     private Issue issue;
 
+    @Enumerated(EnumType.STRING)
     private Status oldStatus;
 
+    @Enumerated(EnumType.STRING)
     private Status newStatus;
 
     private LocalDate logDate;
