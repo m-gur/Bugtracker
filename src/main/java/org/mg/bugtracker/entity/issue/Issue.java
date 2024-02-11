@@ -1,4 +1,4 @@
-package org.mg.bugtracker.entity;
+package org.mg.bugtracker.entity.issue;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mg.bugtracker.entity.comment.Comment;
+import org.mg.bugtracker.entity.project.Project;
+import org.mg.bugtracker.entity.user.Person;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.List;
 public class Issue {
 
     @Id
+    @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer issueId;
 
@@ -48,7 +52,6 @@ public class Issue {
 
     @ManyToOne
     @JoinColumn(name = "assignee_id")
-    @NotNull
     private Person assignee;
 
     @NotNull

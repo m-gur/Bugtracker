@@ -1,4 +1,4 @@
-package org.mg.bugtracker.entity;
+package org.mg.bugtracker.entity.issue;
 
 public enum Status {
     NEW,

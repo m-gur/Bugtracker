@@ -1,4 +1,4 @@
-package org.mg.bugtracker.entity;
+package org.mg.bugtracker.entity.issue;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

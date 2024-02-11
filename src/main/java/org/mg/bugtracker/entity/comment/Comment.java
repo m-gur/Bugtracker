@@ -1,4 +1,4 @@
-package org.mg.bugtracker.entity;
+package org.mg.bugtracker.entity.comment;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.mg.bugtracker.entity.issue.Issue;
+import org.mg.bugtracker.entity.user.Person;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.List;
 public class Comment {
 
     @Id
+    @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer commentId;
 
@@ -30,15 +33,15 @@ public class Comment {
 
     private String content;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
     private List<Attachment> attachments;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     @NotNull
     private Person person;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "issue_id")
     @NotNull
     private Issue issue;

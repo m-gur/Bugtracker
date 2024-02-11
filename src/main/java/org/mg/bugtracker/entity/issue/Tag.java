@@ -1,4 +1,4 @@
-package org.mg.bugtracker.entity;
+package org.mg.bugtracker.entity.issue;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -7,30 +7,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name = "logins")
+@Table(name = "tags")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Login {
+public class Tag {
 
     @Id
-    private Integer loginId;
+    @Column(unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer tagId;
 
     @NotNull
-    private String login;
+    private String name;
 
-    @NotNull
-    private String password;
-
-    @NotNull
-    private String email;
-
-    @ManyToOne
-    @JoinColumn(name = "authority_id")
-    @NotNull
-    private Authority authority;
+    @OneToMany(mappedBy = "tag")
+    private List<IssueTag> issueTags;
 
     @NotNull
     private boolean deleted;

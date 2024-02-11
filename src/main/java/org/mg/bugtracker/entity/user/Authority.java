@@ -1,4 +1,4 @@
-package org.mg.bugtracker.entity;
+package org.mg.bugtracker.entity.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +16,7 @@ import lombok.Setter;
 public class Authority {
 
     @Id
+    @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer authorityId;
 

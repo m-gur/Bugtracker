@@ -1,4 +1,4 @@
-package org.mg.bugtracker.entity;
+package org.mg.bugtracker.entity.comment;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +18,7 @@ import java.time.LocalDate;
 public class Attachment {
 
     @Id
+    @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer attachmentId;
 
@@ -26,7 +27,7 @@ public class Attachment {
     private byte[] file;
 
     @NotNull
-    private LocalDate date;
+    private LocalDate dateAdded;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")

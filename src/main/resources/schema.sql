@@ -38,7 +38,7 @@ CREATE TABLE projects
     project_id   INT PRIMARY KEY AUTO_INCREMENT,
     name         VARCHAR(255),
     enabled      BOOLEAN NOT NULL,
-    data_created DATE NOT NULL,
+    date_created DATE NOT NULL,
     code         VARCHAR(20),
     description  VARCHAR(255)
 );
@@ -54,7 +54,7 @@ CREATE TABLE issues
     description  VARCHAR(255),
     code         VARCHAR(20),
     creator_id   INT NOT NULL,
-    assignee_id  INT NOT NULL,
+    assignee_id  INT,
     date_created DATE NOT NULL,
     last_update  DATE NOT NULL,
     deleted      BOOLEAN NOT NULL DEFAULT false,
@@ -86,19 +86,19 @@ CREATE TABLE attachments
     FOREIGN KEY (comment_id) REFERENCES comments (comment_id)
 );
 
-CREATE TABLE logs
+CREATE TABLE issue_logs
 (
-    log_id     INT PRIMARY KEY AUTO_INCREMENT,
+    issue_log_id     INT PRIMARY KEY AUTO_INCREMENT,
     person_id  INT NOT NULL,
     issue_id   INT NOT NULL,
     old_status VARCHAR(255) NOT NULL,
     new_status VARCHAR(255) NOT NULL,
-    date       DATE NOT NULL,
+    log_date       DATE NOT NULL,
     FOREIGN KEY (person_id) REFERENCES persons (person_id),
     FOREIGN KEY (issue_id) REFERENCES issues (issue_id)
 );
 
-CREATE TABLE issues_tags
+CREATE TABLE issue_tags
 (
     issue_id INT NOT NULL,
     tag_id   INT NOT NULL,

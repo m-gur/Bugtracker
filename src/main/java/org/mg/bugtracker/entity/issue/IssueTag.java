@@ -1,4 +1,4 @@
-package org.mg.bugtracker.entity;
+package org.mg.bugtracker.entity.issue;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -19,11 +19,13 @@ public class IssueTag {
     private IssueTagId id;
 
     @ManyToOne
+    @JoinColumn(name = "issue_id")
     @MapsId("issueId")
     @NotNull
     private Issue issue;
 
     @ManyToOne
+    @JoinColumn(name = "tag_id")
     @MapsId("tagId")
     @NotNull
     private Tag tag;
