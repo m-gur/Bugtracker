@@ -7,25 +7,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
-@Table(name = "tags")
+@Table(name = "logins")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tag {
+public class Login {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer tagId;
+    private Integer loginId;
 
     @NotNull
-    private String name;
+    private String login;
 
-    @OneToMany(mappedBy = "tag")
-    private List<IssueTag> issueTags;
+    @NotNull
+    private String password;
+
+    @NotNull
+    private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "authority_id")
+    @NotNull
+    private Authority authority;
 
     @NotNull
     private boolean deleted;

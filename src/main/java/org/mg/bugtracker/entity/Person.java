@@ -1,6 +1,7 @@
 package org.mg.bugtracker.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,14 +19,15 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer personId;
 
-    private String login;
+    private String name;
 
-    private String password;
+    private String surname;
 
-    private String email;
+    @OneToOne
+    @JoinColumn(name = "login_id")
+    @NotNull
+    private Login login;
 
-    @ManyToOne
-    private Authority authority;
-
+    @NotNull
     private boolean deleted;
 }

@@ -1,6 +1,7 @@
 package org.mg.bugtracker.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,13 +22,17 @@ public class Attachment {
     private Integer attachmentId;
 
     @Lob
+    @NotNull
     private byte[] file;
 
+    @NotNull
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
+    @NotNull
     private Comment comment;
 
+    @NotNull
     private boolean deleted;
 }

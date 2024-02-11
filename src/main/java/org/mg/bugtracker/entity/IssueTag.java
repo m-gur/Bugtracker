@@ -1,6 +1,7 @@
 package org.mg.bugtracker.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +20,11 @@ public class IssueTag {
 
     @ManyToOne
     @MapsId("issueId")
+    @NotNull
     private Issue issue;
 
     @ManyToOne
     @MapsId("tagId")
+    @NotNull
     private Tag tag;
 }

@@ -1,6 +1,7 @@
 package org.mg.bugtracker.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,10 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer commentId;
 
+    @NotNull
     private LocalDate dateCreated;
 
+    @NotNull
     private LocalDate lastUpdate;
 
     private String content;
@@ -32,11 +35,14 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "person_id")
+    @NotNull
     private Person person;
 
     @ManyToOne
     @JoinColumn(name = "issue_id")
+    @NotNull
     private Issue issue;
 
+    @NotNull
     private boolean deleted;
 }

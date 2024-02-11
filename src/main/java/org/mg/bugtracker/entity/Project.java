@@ -1,6 +1,7 @@
 package org.mg.bugtracker.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,11 +24,13 @@ public class Project {
 
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "project")
     private List<Issue> issues;
 
+    @NotNull
     private boolean enabled;
 
+    @NotNull
     private LocalDate dateCreated;
 
     private String code;
