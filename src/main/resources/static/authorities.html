@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Authorities</title>
+</head>
+<body>
+<h2>Authorities</h2>
+<div id="errorMessage" style="color: red; font-weight: bold; text-align: center;"></div>
+<ul id="authoritiesList"></ul>
+
+<script>
+  fetch('/bugtracker/authorities/all')
+          .then(response => {
+            if (response.status === 403) {
+              throw new Error('Brak dostępu');
+            } else if (!response.ok) {
+              throw new Error('Wystąpił błąd: ' + response.status);
+            }
+            return response.json();
+          })
+          .then(data => {
+            const authoritiesList = document.getElementById('authoritiesList');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '';
+
+            authoritiesList.innerHTML = '';
+
+            data.forEach(authority => {
+              const listItem = document.createElement('li');
+              listItem.textContent = authority.name;
+              authoritiesList.appendChild(listItem);
+            });
+          })
+          .catch(error => {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = error.message;
+            console.error('Wystąpił błąd podczas pobierania danych:', error);
+          });
+</script>
+</body>
+</html>
