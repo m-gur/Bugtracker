@@ -5,6 +5,7 @@ import org.mg.bugtracker.controller.BugTrackerAbstractController;
 import org.mg.bugtracker.entity.comment.dto.CommentDTO;
 import org.mg.bugtracker.service.comment.CommentService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,5 +19,10 @@ public class CommentController extends BugTrackerAbstractController {
     @GetMapping(value = "/comments/all")
     public List<CommentDTO> getAllComments() {
         return commentService.getAll();
+    }
+
+    @GetMapping(value = "/comments/{commentId}")
+    public CommentDTO getCommentByCommentId(@PathVariable Integer commentId) {
+        return commentService.getCommentById(commentId);
     }
 }

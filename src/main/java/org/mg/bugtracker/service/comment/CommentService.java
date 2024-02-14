@@ -22,4 +22,10 @@ public class CommentService {
                 .map(commentMapper::toCommentDTO)
                 .collect(Collectors.toList());
     }
+
+    public CommentDTO getCommentById(Integer commentId) {
+        return commentRepository.findCommentByCommentId(commentId)
+                .map(commentMapper::toCommentDTO)
+                .orElseThrow(() -> new RuntimeException("Comment with given id not exist!"));
+    }
 }
