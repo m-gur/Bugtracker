@@ -19,6 +19,13 @@ public interface CommentMapper {
     @Mapping(target = "issueId", source = "issue", qualifiedByName = "getIssueId")
     CommentDTO toCommentDTO(Comment comment);
 
+    @Mapping(target = "person", source = "personId", qualifiedByName = "getPerson")
+    @Mapping(target = "issue", source = "issueId", qualifiedByName = "getIssue")
+    @Mapping(target = "attachments", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "commentId", ignore = true)
+    Comment addComment(RequestedComment requestedComment);
+
     @Named("getPerson")
     default Person getPerson(Integer personId) {
         if (personId != null) {

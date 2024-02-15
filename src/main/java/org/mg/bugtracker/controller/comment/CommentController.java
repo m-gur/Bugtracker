@@ -3,10 +3,9 @@ package org.mg.bugtracker.controller.comment;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.controller.BugTrackerAbstractController;
 import org.mg.bugtracker.entity.comment.dto.CommentDTO;
+import org.mg.bugtracker.entity.comment.dto.RequestedComment;
 import org.mg.bugtracker.service.comment.CommentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +21,17 @@ public class CommentController extends BugTrackerAbstractController {
     }
 
     @GetMapping(value = "/comments/{commentId}")
-    public CommentDTO getCommentByCommentId(@PathVariable Integer commentId) {
+    public CommentDTO getCommentByCommentId(@PathVariable int commentId) {
         return commentService.getCommentById(commentId);
+    }
+
+    @PostMapping(value = "/comments/add")
+    public CommentDTO addComment(@RequestBody RequestedComment requestedComment) {
+        return commentService.addComment(requestedComment);
+    }
+
+    @DeleteMapping(value = "/comments/{commentId}")
+    public void deleteComment(@PathVariable int commentId) {
+        commentService.deleteComment(commentId);
     }
 }
