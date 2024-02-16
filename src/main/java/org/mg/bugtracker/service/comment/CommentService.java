@@ -28,7 +28,7 @@ public class CommentService {
     }
 
     public CommentDTO getCommentById(int commentId) {
-        return commentRepository.findCommentByCommentId(commentId)
+        return commentRepository.findById(commentId)
                 .map(commentMapper::toCommentDTO)
                 .orElseThrow(() -> new RuntimeException("Comment with given id not exist!"));
     }

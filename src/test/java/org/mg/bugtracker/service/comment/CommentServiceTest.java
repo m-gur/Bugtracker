@@ -77,7 +77,7 @@ class CommentServiceTest {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setPersonId(1);
         // when
-        when(commentRepository.findCommentByCommentId(1)).thenReturn(Optional.of(comment));
+        when(commentRepository.findById(1)).thenReturn(Optional.of(comment));
         when(commentMapper.toCommentDTO(comment)).thenReturn(commentDTO);
         CommentDTO commentById = commentService.getCommentById(1);
 
