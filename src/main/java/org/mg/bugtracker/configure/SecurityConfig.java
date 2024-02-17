@@ -13,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final HttpLoginSuccessHandler httpLoginSuccessHandler;
+    private final HttpLoginFailureHandler httpLoginFailureHandler;
+    private final HttpLogoutSuccessHandler httpLogoutSuccessHandler;
     private final UserDetailsServiceImpl userDetailsService;
 
     @Bean
@@ -29,13 +32,18 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
 
                 .formLogin(customizer -> customizer
+                        .loginPage("/login.html")
                         .loginProcessingUrl("/login")
-                        .permitAll())
+                        .permitAll()
+                        .successHandler(httpLoginSuccessHandler)
+                        .failureHandler(httpLoginFailureHandler))
 
                 .logout(customizer -> customizer
                         .logoutUrl("/logout")
-                        .permitAll())
+                        .logoutSuccessHandler(httpLogoutSuccessHandler)
+                        .invalidateHttpSession(true))
 
+                .csrf().disable()
                 .build();
     }
 }
