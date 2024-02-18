@@ -15,7 +15,7 @@ public class ProjectController extends BugTrackerAbstractController {
 
     private final ProjectService projectService;
 
-    @GetMapping(value = "projects/all")
+    @GetMapping(value = "/projects/all")
     public List<ProjectDTO> getAll() {
         return projectService.getAll();
     }

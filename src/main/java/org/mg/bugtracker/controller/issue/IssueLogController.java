@@ -15,7 +15,7 @@ public class IssueLogController extends BugTrackerAbstractController {
 
     private final IssueLogService issueLogService;
 
-    @GetMapping(value = "issue-logs/all")
+    @GetMapping(value = "/issue-logs/all")
     public List<IssueLogDTO> getAll() {
         return issueLogService.getAll();
     }

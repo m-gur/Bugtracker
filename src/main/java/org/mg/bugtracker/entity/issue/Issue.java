@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
 import org.mg.bugtracker.entity.comment.Comment;
 import org.mg.bugtracker.entity.project.Project;
 import org.mg.bugtracker.entity.user.Person;
@@ -19,6 +21,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE issues SET deleted = 1 WHERE issue_id = ?", check = ResultCheckStyle.COUNT)
 public class Issue {
 
     @Id

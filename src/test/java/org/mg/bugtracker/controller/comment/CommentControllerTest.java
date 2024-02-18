@@ -44,7 +44,7 @@ class CommentControllerTest {
         commentDTOList.add(new CommentDTO());
         commentDTOList.add(new CommentDTO());
 
-        //when
+        // when
         when(commentService.getAll()).thenReturn(commentDTOList);
 
         // then
@@ -82,7 +82,7 @@ class CommentControllerTest {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setPersonId(1);
 
-        //when
+        // when
         when(commentService.addComment(requestedComment)).thenReturn(commentDTO);
 
         // then
@@ -99,8 +99,7 @@ class CommentControllerTest {
     void deleteComment_withoutParameters_returns200ok() throws Exception {
         // given
         int commentId = 1;
-        // when
-        // then
+        // when & then
         mockMvc.perform(delete("/bugtracker/comments/{commentId}", commentId)
                         .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON)

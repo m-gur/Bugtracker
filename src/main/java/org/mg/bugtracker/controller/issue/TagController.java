@@ -15,7 +15,7 @@ public class TagController extends BugTrackerAbstractController {
 
     private final TagService tagService;
 
-    @GetMapping(value = "tags/all")
+    @GetMapping(value = "/tags/all")
     public List<TagDTO> getAll() {
         return tagService.getAll();
     }

@@ -18,6 +18,7 @@ class LoginTest {
 
     @Test
     void testSuccessfulLogin() throws Exception {
+        // given, when & then
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
                         .param("username", "admin")
                         .param("password", "admin"))
@@ -27,6 +28,7 @@ class LoginTest {
 
     @Test
     void testFailureLogin() throws Exception {
+        // given, when & then
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
                         .param("username", "admin")
                         .param("password", "none"))
@@ -36,6 +38,7 @@ class LoginTest {
 
     @Test
     void testSuccessfulLogout() throws Exception {
+        // given, when & then
         mockMvc.perform(MockMvcRequestBuilders.post("/logout"))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/login"));

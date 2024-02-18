@@ -15,7 +15,7 @@ public class AuthorityController extends BugTrackerAbstractController {
 
     private final AuthorityService authorityService;
 
-    @GetMapping(value = "authorities/all")
+    @GetMapping(value = "/authorities/all")
     public List<AuthorityDTO> getAll() {
         return authorityService.getAll();
     }
@@ -30,7 +30,7 @@ public class AuthorityController extends BugTrackerAbstractController {
         return authorityService.addAuthority(authorityRequest);
     }
 
-    @DeleteMapping(value = "authorities/{authorityId}")
+    @DeleteMapping(value = "/authorities/{authorityId}")
     public void deleteAuthority(@PathVariable int authorityId) {
         authorityService.deleteAuthority(authorityId);
     }

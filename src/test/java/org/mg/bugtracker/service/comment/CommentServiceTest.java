@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -58,7 +59,6 @@ class CommentServiceTest {
 
     @Test
     void getAll_withoutParameters_returnsEmptyList() {
-        // given
         // when
         List<CommentDTO> all = commentService.getAll();
 
@@ -76,6 +76,7 @@ class CommentServiceTest {
 
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setPersonId(1);
+
         // when
         when(commentRepository.findById(1)).thenReturn(Optional.of(comment));
         when(commentMapper.toCommentDTO(comment)).thenReturn(commentDTO);
@@ -87,10 +88,9 @@ class CommentServiceTest {
 
     @Test
     void getCommentById_withoutParameters_throwsRuntimeException() {
-        // given
-        // when
-        // then
-        assertThrows(RuntimeException.class, () -> commentService.getCommentById(1));
+        // given, when & then
+
+        assertThrows(RuntimeException.class, () -> commentService.getCommentById(anyInt()));
     }
 
     @Test

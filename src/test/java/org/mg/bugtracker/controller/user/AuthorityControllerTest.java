@@ -37,11 +37,12 @@ class AuthorityControllerTest {
 
     @Test
     void getAll_withoutParameters_returns200ok() throws Exception {
+        // given
         List<AuthorityDTO> authorityDTOList = new ArrayList<>();
         authorityDTOList.add(new AuthorityDTO());
         authorityDTOList.add(new AuthorityDTO());
 
-        //when
+        // when
         when(authorityService.getAll()).thenReturn(authorityDTOList);
 
         // then
@@ -78,14 +79,14 @@ class AuthorityControllerTest {
         AuthorityDTO authorityDTO = new AuthorityDTO();
         authorityDTO.setName("supp");
 
-        //when
+        // when
         when(authorityService.addAuthority(authorityRequest)).thenReturn(authorityDTO);
 
         // then
         mockMvc.perform(post("/bugtracker/authorities/add")
                         .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN")))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(authorityDTO)))
+                        .content(objectMapper.writeValueAsString(authorityRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(authorityDTO.getName()));
     }
@@ -94,8 +95,8 @@ class AuthorityControllerTest {
     void deleteAuthority_withoutParameters_returns200ok() throws Exception {
         // given
         int authorityId = 1;
-        // when
-        // then
+
+        // when & then
         mockMvc.perform(delete("/bugtracker/authorities/{authorityId}", authorityId)
                         .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN")))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -104,6 +105,7 @@ class AuthorityControllerTest {
 
     @Test
     void accessProtectedResourceWithDifferentRole() throws Exception {
+        // when & then
         mockMvc.perform(get("/bugtracker/authorities/all")
                         .with(SecurityMockMvcRequestPostProcessors.user("user").password("password").authorities(AuthorityUtils.createAuthorityList("USER"))))
                 .andExpect(status().isForbidden());

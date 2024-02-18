@@ -49,7 +49,6 @@ class AuthorityServiceTest {
 
     @Test
     void getAll_withoutParameters_returnsEmptyList() {
-        // given
         // when
         List<AuthorityDTO> all = authorityService.getAll();
 
@@ -65,6 +64,7 @@ class AuthorityServiceTest {
 
         AuthorityDTO authorityDTO = new AuthorityDTO();
         authorityDTO.setAuthorityId(1);
+
         // when
         when(authorityRepository.findById(1)).thenReturn(Optional.of(authority));
         when(authorityMapper.toAuthorityDTO(authority)).thenReturn(authorityDTO);
@@ -76,10 +76,9 @@ class AuthorityServiceTest {
 
     @Test
     void getAuthorityById_withoutParameters_throwsRuntimeException() {
-        // given
-        // when
-        // then
-        assertThrows(RuntimeException.class, () -> authorityService.getAuthorityById(1));
+        // given, when & then
+
+        assertThrows(RuntimeException.class, () -> authorityService.getAuthorityById(anyInt()));
     }
 
     @Test
