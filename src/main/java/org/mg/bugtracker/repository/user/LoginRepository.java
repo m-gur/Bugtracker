@@ -19,4 +19,15 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
             WHERE login.authority.authorityId = :authorityId
             """)
     void deleteByAuthorityId(int authorityId);
+
+    @Modifying
+    @Query("""
+            UPDATE Login login
+            SET login.deleted = true
+            WHERE login.loginId = (
+                SELECT person.login.loginId FROM Person person
+                WHERE person.personId = :personId)
+            """)
+    void deleteByPersonId(int personId);
+
 }

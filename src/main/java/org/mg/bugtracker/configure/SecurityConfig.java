@@ -3,8 +3,10 @@ package org.mg.bugtracker.configure;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,9 +29,15 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
                 .userDetailsService(userDetailsService)
+                .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(customizer -> customizer
+
                 .requestMatchers("/bugtracker/authorities/**").hasAuthority("ADMIN")
-                        .anyRequest().authenticated())
+                .requestMatchers("/bugtracker/persons/**").hasAuthority("ADMIN")
+                .requestMatchers("/add-login.html").permitAll()
+                .requestMatchers(HttpMethod.POST,"/add-login").permitAll()
+                .anyRequest().authenticated()
+                )
 
                 .formLogin(customizer -> customizer
                         .loginPage("/login.html")
@@ -43,7 +51,6 @@ public class SecurityConfig {
                         .logoutSuccessHandler(httpLogoutSuccessHandler)
                         .invalidateHttpSession(true))
 
-                .csrf().disable()
                 .build();
     }
 }

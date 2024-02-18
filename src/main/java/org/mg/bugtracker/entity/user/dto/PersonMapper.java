@@ -16,7 +16,7 @@ public interface PersonMapper {
     PersonDTO toPersonDTO(Person person);
 
     @Named("getLogin")
-    default Login getComment(Integer loginId) {
+    default Login getLogin(Integer loginId) {
         if (loginId != null) {
             Login login = new Login();
             login.setLoginId(loginId);
