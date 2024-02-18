@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,7 +46,7 @@ class AuthorityControllerTest {
 
         // then
         mockMvc.perform(get("/bugtracker/authorities/all")
-                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN")))
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(authorityDTOList.size()));
@@ -64,7 +64,7 @@ class AuthorityControllerTest {
 
         // then
         mockMvc.perform(get("/bugtracker/authorities/{authorityId}", authorityId)
-                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN")))
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.authorityId").value(authorityId));
     }
@@ -83,10 +83,9 @@ class AuthorityControllerTest {
 
         // then
         mockMvc.perform(post("/bugtracker/authorities/add")
-                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN")))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(authorityDTO))
-                        .with(csrf()))
+                        .content(objectMapper.writeValueAsString(authorityDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(authorityDTO.getName()));
     }
@@ -98,16 +97,15 @@ class AuthorityControllerTest {
         // when
         // then
         mockMvc.perform(delete("/bugtracker/authorities/{authorityId}", authorityId)
-                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN")))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     @Test
     void accessProtectedResourceWithDifferentRole() throws Exception {
         mockMvc.perform(get("/bugtracker/authorities/all")
-                        .with(SecurityMockMvcRequestPostProcessors.user("user").password("password").roles("USER")))
+                        .with(SecurityMockMvcRequestPostProcessors.user("user").password("password").authorities(AuthorityUtils.createAuthorityList("USER"))))
                 .andExpect(status().isForbidden());
     }
 }
