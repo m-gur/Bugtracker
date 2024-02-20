@@ -1,12 +1,15 @@
 package org.mg.bugtracker.service.issue;
 
 import lombok.RequiredArgsConstructor;
+import org.mg.bugtracker.entity.issue.Tag;
+import org.mg.bugtracker.entity.issue.dto.RequestedTag;
 import org.mg.bugtracker.entity.issue.dto.TagDTO;
 import org.mg.bugtracker.entity.issue.dto.TagMapper;
 import org.mg.bugtracker.repository.issue.TagRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,5 +24,23 @@ public class TagService {
                 .stream()
                 .map(tagMapper::toTagDTO)
                 .collect(Collectors.toList());
+    }
+
+    public TagDTO getById(int tagId) {
+        return tagRepository.findById(tagId)
+                .map(tagMapper::toTagDTO)
+                .orElseThrow(() -> new RuntimeException("Cannot find tag with requested id!"));
+    }
+
+    public TagDTO addTag(RequestedTag requestedTag) {
+        Optional<Tag> tag = tagRepository.findByName(requestedTag.getName());
+        if (tag.isEmpty()) {
+            Tag newTag = tagMapper.fromRequest(requestedTag);
+            return tagMapper.toTagDTO(tagRepository.save(newTag));
+        } else throw new RuntimeException("Cannot add this tag!");
+    }
+
+    public void deleteTag(int tagId) {
+        tagRepository.deleteById(tagId);
     }
 }

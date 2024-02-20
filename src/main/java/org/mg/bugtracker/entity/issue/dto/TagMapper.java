@@ -11,4 +11,9 @@ public interface TagMapper {
     Tag toTag(TagDTO dto);
 
     TagDTO toTagDTO(Tag tag);
+
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "tagId", ignore = true)
+    @Mapping(target = "issueTags", ignore = true)
+    Tag fromRequest(RequestedTag requestedTag);
 }
