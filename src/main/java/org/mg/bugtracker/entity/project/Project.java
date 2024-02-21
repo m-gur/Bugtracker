@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
 import org.mg.bugtracker.entity.issue.Issue;
 
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE projects SET enabled = 1 WHERE project_id = ?", check = ResultCheckStyle.COUNT)
 public class Project {
 
     @Id

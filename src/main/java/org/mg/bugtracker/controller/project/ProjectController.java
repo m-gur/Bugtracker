@@ -3,9 +3,9 @@ package org.mg.bugtracker.controller.project;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.controller.BugTrackerAbstractController;
 import org.mg.bugtracker.entity.project.dto.ProjectDTO;
+import org.mg.bugtracker.entity.project.dto.RequestedProject;
 import org.mg.bugtracker.service.project.ProjectService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,5 +18,20 @@ public class ProjectController extends BugTrackerAbstractController {
     @GetMapping(value = "/projects/all")
     public List<ProjectDTO> getAll() {
         return projectService.getAll();
+    }
+
+    @GetMapping(value = "/projects/{projectId}")
+    public ProjectDTO getById(@PathVariable int projectId) {
+        return projectService.getById(projectId);
+    }
+
+    @PostMapping(value = "/projects/add")
+    public ProjectDTO addProject(@RequestBody RequestedProject requestedProject) {
+        return projectService.addProject(requestedProject);
+    }
+
+    @DeleteMapping(value = "/projects/{projectId}")
+    public void disableProject(@PathVariable int projectId) {
+        projectService.disableProject(projectId);
     }
 }

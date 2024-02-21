@@ -19,6 +19,12 @@ public interface ProjectMapper {
     @Mapping(target = "issueIds", source = "issues", qualifiedByName = "getIssueIds")
     ProjectDTO toProjectDTO(Project project);
 
+    @Mapping(target = "issueIds", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
+    @Mapping(target = "projectId", ignore = true)
+    @Mapping(target = "dateCreated", ignore = true)
+    ProjectDTO fromRequest(RequestedProject requestedProject);
+
     @Named("getIssues")
     default List<Issue> getIssues(List<Integer> issueIds) {
         if (!issueIds.isEmpty()) {
