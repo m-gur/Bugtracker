@@ -4,9 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mg.bugtracker.entity.comment.Comment;
-import org.mg.bugtracker.entity.issue.Issue;
-import org.mg.bugtracker.entity.issue.IssueTag;
-import org.mg.bugtracker.entity.issue.IssueTagId;
+import org.mg.bugtracker.entity.issue.*;
 import org.mg.bugtracker.entity.project.Project;
 import org.mg.bugtracker.entity.user.Person;
 
@@ -31,6 +29,15 @@ public interface IssueMapper {
     @Mapping(target = "commentIds", source = "comments", qualifiedByName = "getCommentIds")
     @Mapping(target = "issueTagIds", source = "issueTags", qualifiedByName = "getIssueTagIds")
     IssueDTO toIssueDTO(Issue issue);
+
+    @Mapping(target = "issueTagIds", ignore = true)
+    @Mapping(target = "issueId", ignore = true)
+    @Mapping(target = "commentIds", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "status", source = "status", qualifiedByName = "getStatus")
+    @Mapping(target = "priority", source = "priority", qualifiedByName = "getPriority")
+    @Mapping(target = "type", source = "type", qualifiedByName = "getType")
+    IssueDTO fromRequest(RequestedIssue requestedIssue);
 
     @Named("getPerson")
     default Person getPerson(Integer personId) {
@@ -104,5 +111,20 @@ public interface IssueMapper {
                 .stream()
                 .map(IssueTag::getId)
                 .collect(Collectors.toList()) : null;
+    }
+
+    @Named("getStatus")
+    default Status getStatus(String status) {
+        return Status.valueOf(status);
+    }
+
+    @Named("getPriority")
+    default Priority getPriority(String priority) {
+        return Priority.valueOf(priority);
+    }
+
+    @Named("getType")
+    default Type getType(String type) {
+        return Type.valueOf(type);
     }
 }
