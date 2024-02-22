@@ -1,4 +1,4 @@
-package org.mg.bugtracker.configure;
+package org.mg.bugtracker.configure.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

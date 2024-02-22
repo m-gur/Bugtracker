@@ -1,4 +1,4 @@
-package org.mg.bugtracker.configure;
+package org.mg.bugtracker.configure.security;
 
 import org.mg.bugtracker.entity.user.Login;
 import org.mg.bugtracker.repository.user.LoginRepository;
@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
+import static org.mg.bugtracker.configure.LoginContextHolder.setContextLogin;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -23,6 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Login login = loginRepository.findLoginByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User not found with username: %s", username)));
 
+        setContextLogin(login);
         String password = new String(login.getPassword(), StandardCharsets.UTF_8);
         return new User(login.getLogin(),
             password,

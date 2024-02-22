@@ -1,4 +1,4 @@
-package org.mg.bugtracker.configure;
+package org.mg.bugtracker.configure.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +34,7 @@ public class SecurityConfig {
 
                 .requestMatchers("/bugtracker/authorities/**").hasAuthority("ADMIN")
                 .requestMatchers("/bugtracker/persons/**").hasAuthority("ADMIN")
+                .requestMatchers("/bugtracker/issues/**").hasAuthority("ADMIN")
                 .requestMatchers("/add-login.html").permitAll()
                 .requestMatchers(HttpMethod.POST,"/add-login").permitAll()
                 .anyRequest().authenticated()

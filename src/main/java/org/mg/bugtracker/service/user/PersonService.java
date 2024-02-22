@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.mg.bugtracker.configure.LoginContextHolder.getLoginFromContext;
+
 @Service
 @RequiredArgsConstructor
 public class PersonService {
@@ -50,5 +52,11 @@ public class PersonService {
     public void deletePerson(int personId) {
         loginRepository.deleteByPersonId(personId);
         personRepository.deleteById(personId);
+    }
+
+    public Person findPersonForContextLogin() {
+        Login loginFromContext = getLoginFromContext();
+        return personRepository.findPersonByLoginId(loginFromContext.getLoginId())
+                .orElseThrow(() -> new RuntimeException("Cannot find person with existed login!"));
     }
 }
