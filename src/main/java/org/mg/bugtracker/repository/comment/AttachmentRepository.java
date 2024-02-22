@@ -14,8 +14,16 @@ public interface AttachmentRepository extends JpaRepository<Attachment, Integer>
     @Modifying
     @Query("""
             UPDATE Attachment
-            SET deleted = false
+            SET deleted = true
             WHERE comment.commentId = :commentId
             """)
     void deleteAttachmentsByCommentId(int commentId);
+
+    @Modifying
+    @Query("""
+            UPDATE Attachment
+            SET deleted = true
+            WHERE comment.issue.issueId = :issueId
+            """)
+    void deleteAttachmentsByIssueId(int issueId);
 }
