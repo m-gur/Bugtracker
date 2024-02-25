@@ -2,6 +2,7 @@ package org.mg.bugtracker.service.user;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mg.bugtracker.entity.user.Login;
 import org.mg.bugtracker.entity.user.Person;
 import org.mg.bugtracker.entity.user.dto.PersonDTO;
 import org.mg.bugtracker.entity.user.dto.PersonMapper;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mg.bugtracker.configure.LoginContextHolder.setContextLogin;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -117,4 +119,27 @@ class PersonServiceTest {
         verify(personRepository, times(1)).deleteById(anyInt());
     }
 
+    @Test
+    void findPersonForContextLogin_withoutParameters_personFound() {
+        // given
+        Login login = new Login();
+        login.setLoginId(1);
+        setContextLogin(login);
+
+        Person person = new Person();
+        person.setLogin(login);
+
+        // when
+        when(personRepository.findPersonByLoginId(login.getLoginId())).thenReturn(Optional.of(person));
+        Person foundPerson = personService.findPersonForContextLogin();
+
+        // then
+        assertEquals(foundPerson.getLogin().getLoginId(), login.getLoginId());
+    }
+
+    @Test
+    void findPersonForContextLogin_withoutParameters_throwsException() {
+        // then
+        assertThrows(RuntimeException.class, () -> personService.findPersonForContextLogin());
+    }
 }
