@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comments</title>
+    <style>
+        body {
+            background-color: lightgray;
+            font-family: Arial, "Arial Black", serif;
+        }
+        #commentsList {
+            list-style-type: none;
+            padding: 0;
+        }
+        .comment {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .commentContent {
+            margin-bottom: 10px;
+        }
+        .attachments {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        .attachmentImage {
+            width: 150px;
+            height: auto;
+            margin: 5px;
+            cursor: pointer;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+        #overlayImage {
+            max-width: 80%;
+            max-height: 80%;
+            margin-top: 10%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h2>Comments</h2>
+<div id="errorMessage" style="color: red; font-weight: bold; text-align: center;"></div>
+<ul id="commentsList"></ul>
+
+<div id="overlay">
+    <img id="overlayImage" src="" alt="Powiększony obrazek">
+</div>
+
+<script>
+    const attachmentData = {};
+
+    fetch('/bugtracker/comments/all')
+        .then(response => {
+            if (response.status === 403) {
+                throw new Error('Brak dostępu');
+            } else if (!response.ok) {
+                throw new Error('Wystąpił błąd: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const commentsList = document.getElementById('commentsList');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '';
+
+            data.forEach(comment => {
+                const commentItem = document.createElement('li');
+                commentItem.classList.add('comment');
+
+                const contentElement = document.createElement('p');
+                contentElement.classList.add('commentContent');
+                contentElement.textContent = `Treść komentarza: ${comment.content}`;
+                commentItem.appendChild(contentElement);
+
+                if (Array.isArray(comment.attachmentIds) && comment.attachmentIds.length > 0) {
+                    const attachmentsContainer = document.createElement('div');
+                    attachmentsContainer.classList.add('attachments');
+                    comment.attachmentIds.forEach(attachmentId => {
+                        const image = document.createElement('img');
+                        image.classList.add('attachmentImage');
+                        image.src = `/bugtracker/attachments/image/${attachmentId}`;
+                        image.setAttribute('data-image-id', attachmentId);
+                        image.addEventListener('click', enlargeImage.bind(null, comment.attachmentIds, attachmentId));
+                        attachmentsContainer.appendChild(image);
+
+                        attachmentData[attachmentId] = image.src;
+                    });
+                    commentItem.appendChild(attachmentsContainer);
+                } else {
+                    const noFilesElement = document.createElement('p');
+                    noFilesElement.textContent = 'Brak załączników';
+                    commentItem.appendChild(noFilesElement);
+                }
+
+                const datesElement = document.createElement('p');
+                datesElement.textContent = `Utworzono: ${comment.dateCreated}, Ostatnia aktualizacja: ${comment.lastUpdate}`;
+                commentItem.appendChild(datesElement);
+
+                commentsList.appendChild(commentItem);
+            });
+        })
+        .catch(error => {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = error.message;
+            console.error('Wystąpił błąd podczas pobierania danych:', error);
+        });
+
+    function enlargeImage(attachmentIds, attachmentId) {
+        const imageUrl = attachmentData[attachmentId];
+        const overlayImage = document.getElementById('overlayImage');
+        overlayImage.src = imageUrl;
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closeOverlay() {
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    document.getElementById('overlay').addEventListener('click', closeOverlay);
+</script>
+<a href="/index.html">Welcome Page</a>
+</body>
+</html>

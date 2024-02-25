@@ -27,7 +27,13 @@ public class Attachment {
 
     @Lob
     @NotNull
-    private byte[] file;
+    private byte[] data;
+
+    @NotNull
+    private String type;
+
+    @NotNull
+    private String name;
 
     @NotNull
     private LocalDate dateAdded;

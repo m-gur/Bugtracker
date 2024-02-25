@@ -16,7 +16,11 @@ public class AttachmentDTO {
 
     private Integer attachmentId;
 
-    private byte[] file;
+    private byte[] data;
+
+    private String name;
+
+    private String type;
 
     private LocalDate dateAdded;
 

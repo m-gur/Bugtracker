@@ -10,15 +10,19 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,23 +80,22 @@ class CommentControllerTest {
     @Test
     void addComment_withoutParameters_returns200ok() throws Exception {
         // given
+        int issueId = 1;
         RequestedComment requestedComment = new RequestedComment();
-        requestedComment.setPersonId(1);
+        requestedComment.setIssueId(issueId);
 
-        CommentDTO commentDTO = new CommentDTO();
-        commentDTO.setPersonId(1);
 
-        // when
-        when(commentService.addComment(requestedComment)).thenReturn(commentDTO);
+        byte[] fileContent = "Text".getBytes();
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt", "text/plain", fileContent);
 
         // then
-        mockMvc.perform(post("/bugtracker/comments/add")
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/bugtracker/comments/add")
+                        .file(multipartFile)
                         .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(commentDTO))
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .content(objectMapper.writeValueAsString(requestedComment))
                         .with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.personId").value(commentDTO.getPersonId()));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test

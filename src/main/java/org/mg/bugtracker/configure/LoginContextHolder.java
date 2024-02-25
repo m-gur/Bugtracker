@@ -5,13 +5,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LoginContextHolder {
-    private static final ThreadLocal<Login> context = new ThreadLocal<>();
-
+    private static Login login;
     public static Login getLoginFromContext() {
-        return context.get();
+        return login;
     }
 
     public static void setContextLogin(Login login) {
-        context.set(login);
+        LoginContextHolder.login = login;
     }
 }

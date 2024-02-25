@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import static org.mg.bugtracker.configure.LoginContextHolder.setContextLogin;
+
 @Component
 public class HttpLogoutSuccessHandler implements LogoutSuccessHandler {
 
@@ -18,5 +20,6 @@ public class HttpLogoutSuccessHandler implements LogoutSuccessHandler {
         response.setStatus(HttpServletResponse.SC_OK);
         response.sendRedirect("/login");
         response.getWriter().flush();
+        setContextLogin(null);
     }
 }

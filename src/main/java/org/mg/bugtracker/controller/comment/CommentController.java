@@ -6,7 +6,9 @@ import org.mg.bugtracker.entity.comment.dto.CommentDTO;
 import org.mg.bugtracker.entity.comment.dto.RequestedComment;
 import org.mg.bugtracker.service.comment.CommentService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,8 @@ public class CommentController extends BugTrackerAbstractController {
     }
 
     @PostMapping(value = "/comments/add")
-    public CommentDTO addComment(@RequestBody RequestedComment requestedComment) {
-        return commentService.addComment(requestedComment);
+    public CommentDTO addComment(@ModelAttribute RequestedComment requestedComment, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return commentService.addComment(requestedComment, multipartFile);
     }
 
     @DeleteMapping(value = "/comments/{commentId}")

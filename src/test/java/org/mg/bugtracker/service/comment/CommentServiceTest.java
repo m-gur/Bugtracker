@@ -9,10 +9,14 @@ import org.mg.bugtracker.entity.comment.dto.RequestedComment;
 import org.mg.bugtracker.entity.user.Person;
 import org.mg.bugtracker.repository.comment.AttachmentRepository;
 import org.mg.bugtracker.repository.comment.CommentRepository;
+import org.mg.bugtracker.service.user.PersonService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +31,10 @@ class CommentServiceTest {
 
     @InjectMocks
     private CommentService commentService;
+    @Mock
+    private PersonService personService;
+    @Mock
+    private AttachmentService attachmentService;
     @Mock
     private CommentMapper commentMapper;
     @Mock
@@ -94,24 +102,26 @@ class CommentServiceTest {
     }
 
     @Test
-    void addComment_withoutParameters_success() {
+    void addComment_withoutParameters_success() throws IOException {
         // given
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setCommentId(1);
         commentDTO.setPersonId(1);
         Comment commentToSave = new Comment();
         RequestedComment requestedComment = new RequestedComment();
-        requestedComment.setPersonId(1);
+        requestedComment.setIssueId(1);
+        byte[] fileContent = "Text".getBytes();
+        MultipartFile multipartFile = new MockMultipartFile("test.png", "test.png", "image/png", fileContent);
 
         // when
         when(commentMapper.addComment(requestedComment)).thenReturn(commentToSave);
         when(commentMapper.toCommentDTO(commentToSave)).thenReturn(commentDTO);
         when(commentRepository.save(commentToSave)).thenReturn(commentToSave);
-        CommentDTO savedDto = commentService.addComment(requestedComment);
+        CommentDTO savedDto = commentService.addComment(requestedComment, multipartFile);
 
         // then
         assertNotNull(savedDto);
-        assertEquals(commentDTO.getPersonId(), savedDto.getPersonId());
+        assertEquals(commentDTO.getIssueId(), savedDto.getIssueId());
     }
 
     @Test

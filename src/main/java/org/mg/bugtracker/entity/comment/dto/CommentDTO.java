@@ -1,8 +1,12 @@
 package org.mg.bugtracker.entity.comment.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,6 +20,8 @@ public class CommentDTO {
     private Integer personId;
 
     private Integer issueId;
+
+    private List<Integer> attachmentIds;
 
     private LocalDate dateCreated;
 
