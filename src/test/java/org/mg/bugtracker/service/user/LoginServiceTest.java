@@ -1,5 +1,6 @@
 package org.mg.bugtracker.service.user;
 
+import jakarta.persistence.EntityExistsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.user.Authority;
@@ -52,7 +53,7 @@ class LoginServiceTest {
         when(loginRepository.findLoginByLogin(any())).thenReturn(Optional.of(new Login()));
 
         // then
-        assertThrows(RuntimeException.class, () -> loginService.createLoginWithDefaultAuthority(requestedLogin));
+        assertThrows(EntityExistsException.class, () -> loginService.createLoginWithDefaultAuthority(requestedLogin));
     }
 
     @Test
@@ -95,7 +96,7 @@ class LoginServiceTest {
         when(loginRepository.findLoginByLogin(any())).thenReturn(Optional.of(new Login()));
 
         // then
-        assertThrows(RuntimeException.class, () -> loginService.createLogin(requestedPerson));
+        assertThrows(EntityExistsException.class, () -> loginService.createLogin(requestedPerson));
     }
 
     @Test

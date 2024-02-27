@@ -1,5 +1,6 @@
 package org.mg.bugtracker.service.project;
 
+import jakarta.persistence.EntityExistsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.project.Project;
@@ -117,7 +118,7 @@ class ProjectServiceTest {
         when(projectRepository.findByName(requestedProject.getName())).thenReturn(Optional.of(new Project()));
 
         // then
-        assertThrows(RuntimeException.class, () -> projectService.addProject(requestedProject));
+        assertThrows(EntityExistsException.class, () -> projectService.addProject(requestedProject));
     }
 
     @Test

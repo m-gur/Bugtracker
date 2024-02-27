@@ -1,5 +1,6 @@
 package org.mg.bugtracker.service.issue;
 
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.issue.Tag;
 import org.mg.bugtracker.entity.issue.dto.RequestedTag;
@@ -37,7 +38,7 @@ public class TagService {
         if (tag.isEmpty()) {
             Tag newTag = tagMapper.fromRequest(requestedTag);
             return tagMapper.toTagDTO(tagRepository.save(newTag));
-        } else throw new RuntimeException("Cannot add this tag!");
+        } else throw new EntityExistsException("Cannot add this tag!");
     }
 
     public void deleteTag(int tagId) {

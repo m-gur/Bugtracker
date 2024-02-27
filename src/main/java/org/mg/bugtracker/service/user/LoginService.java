@@ -1,5 +1,6 @@
 package org.mg.bugtracker.service.user;
 
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.user.Authority;
 import org.mg.bugtracker.entity.user.Login;
@@ -30,7 +31,7 @@ public class LoginService {
             newLogin.setAuthority(authority);
             newLogin.setDeleted(false);
             loginRepository.save(newLogin);
-        } else throw new RuntimeException("Cannot create login!");
+        } else throw new EntityExistsException("Cannot create login!");
     }
 
     public Login createLogin(RequestedPerson person) {
@@ -46,6 +47,6 @@ public class LoginService {
             loginRepository.save(newLogin);
             return newLogin;
         }
-        else throw new RuntimeException("Cannot create login!");
+        else throw new EntityExistsException("Cannot create login!");
     }
 }

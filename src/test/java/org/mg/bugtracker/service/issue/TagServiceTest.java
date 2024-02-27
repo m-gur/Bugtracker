@@ -1,5 +1,6 @@
 package org.mg.bugtracker.service.issue;
 
+import jakarta.persistence.EntityExistsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.issue.Tag;
@@ -112,7 +113,7 @@ class TagServiceTest {
         when(tagRepository.findByName(requestedTag.getName())).thenReturn(Optional.of(new Tag()));
 
         // then
-        assertThrows(RuntimeException.class, () -> tagService.addTag(requestedTag));
+        assertThrows(EntityExistsException.class, () -> tagService.addTag(requestedTag));
     }
 
     @Test
