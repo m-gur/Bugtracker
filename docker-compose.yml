@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  mysql-bugtracker-db:
+    container_name: bugtracker-mysql
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bugtracker
+    volumes:
+      - mysql-bugtracker-data:/var/lib/mysql
+
+volumes:
+  mysql-bugtracker-data:
