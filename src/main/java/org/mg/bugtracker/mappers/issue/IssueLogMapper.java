@@ -1,10 +1,11 @@
-package org.mg.bugtracker.entity.issue.dto;
+package org.mg.bugtracker.mappers.issue;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mg.bugtracker.entity.issue.Issue;
 import org.mg.bugtracker.entity.issue.IssueLog;
+import org.mg.bugtracker.entity.issue.dto.IssueLogDTO;
 import org.mg.bugtracker.entity.user.Person;
 
 @Mapper

@@ -4,8 +4,8 @@ import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.project.Project;
 import org.mg.bugtracker.entity.project.dto.ProjectDTO;
-import org.mg.bugtracker.entity.project.dto.ProjectMapper;
 import org.mg.bugtracker.entity.project.dto.RequestedProject;
+import org.mg.bugtracker.mappers.project.ProjectMapper;
 import org.mg.bugtracker.repository.project.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -37,10 +37,7 @@ public class ProjectService {
     public ProjectDTO addProject(RequestedProject requestedProject) {
         Optional<Project> existedProject = projectRepository.findByName(requestedProject.getName());
         if (existedProject.isEmpty()) {
-            ProjectDTO projectDTO = projectMapper.fromRequest(requestedProject);
-            projectDTO.setEnabled(false);
-            projectDTO.setDateCreated(LocalDate.now());
-            Project newProject = projectMapper.toProject(projectDTO);
+            Project newProject = createProject(requestedProject);
             return projectMapper.toProjectDTO(projectRepository.save(newProject));
         }
         else throw new EntityExistsException("Cannot create project with provided name!");
@@ -48,5 +45,12 @@ public class ProjectService {
 
     public void disableProject(int projectId) {
         projectRepository.deleteById(projectId);
+    }
+
+    private Project createProject(RequestedProject requestedProject) {
+        Project newProject = projectMapper.fromRequest(requestedProject);
+        newProject.setDateCreated(LocalDate.now());
+        newProject.setEnabled(true);
+        return newProject;
     }
 }

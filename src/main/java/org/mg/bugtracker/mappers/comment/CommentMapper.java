@@ -1,10 +1,12 @@
-package org.mg.bugtracker.entity.comment.dto;
+package org.mg.bugtracker.mappers.comment;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mg.bugtracker.entity.comment.Attachment;
 import org.mg.bugtracker.entity.comment.Comment;
+import org.mg.bugtracker.entity.comment.dto.CommentDTO;
+import org.mg.bugtracker.entity.comment.dto.RequestedComment;
 import org.mg.bugtracker.entity.issue.Issue;
 import org.mg.bugtracker.entity.user.Person;
 
@@ -27,12 +29,12 @@ public interface CommentMapper {
     CommentDTO toCommentDTO(Comment comment);
 
     @Mapping(target = "person", ignore = true)
-    @Mapping(target = "issue", source = "issueId", qualifiedByName = "getIssue")
     @Mapping(target = "attachments", ignore = true)
     @Mapping(target = "deleted", ignore = true)
     @Mapping(target = "commentId", ignore = true)
     @Mapping(target = "dateCreated", ignore = true)
     @Mapping(target = "lastUpdate", ignore = true)
+    @Mapping(target = "issue", source = "issueId", qualifiedByName = "getIssue")
     Comment addComment(RequestedComment requestedComment);
 
     @Named("getPerson")

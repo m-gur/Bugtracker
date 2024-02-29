@@ -1,10 +1,11 @@
-package org.mg.bugtracker.entity.comment.dto;
+package org.mg.bugtracker.mappers.comment;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mg.bugtracker.entity.comment.Attachment;
 import org.mg.bugtracker.entity.comment.Comment;
+import org.mg.bugtracker.entity.comment.dto.AttachmentDTO;
 
 @Mapper
 public interface AttachmentMapper {

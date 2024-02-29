@@ -3,8 +3,8 @@ package org.mg.bugtracker.service.user;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.user.Authority;
 import org.mg.bugtracker.entity.user.dto.AuthorityDTO;
-import org.mg.bugtracker.entity.user.dto.AuthorityMapper;
-import org.mg.bugtracker.entity.user.dto.AuthorityRequest;
+import org.mg.bugtracker.entity.user.dto.RequestedAuthority;
+import org.mg.bugtracker.mappers.user.AuthorityMapper;
 import org.mg.bugtracker.repository.user.AuthorityRepository;
 import org.mg.bugtracker.repository.user.LoginRepository;
 import org.springframework.stereotype.Service;
@@ -33,8 +33,8 @@ public class AuthorityService {
                 .orElseThrow(() -> new RuntimeException("Authority with given id does not exist"));
     }
 
-    public AuthorityDTO addAuthority(AuthorityRequest authorityRequest) {
-        Authority authorityToSave = authorityMapper.fromAuthorityRequest(authorityRequest);
+    public AuthorityDTO addAuthority(RequestedAuthority requestedAuthority) {
+        Authority authorityToSave = authorityMapper.fromAuthorityRequest(requestedAuthority);
         return authorityMapper.toAuthorityDTO(authorityRepository.save(authorityToSave));
     }
 

@@ -1,10 +1,12 @@
-package org.mg.bugtracker.entity.issue.dto;
+package org.mg.bugtracker.mappers.issue;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mg.bugtracker.entity.comment.Comment;
 import org.mg.bugtracker.entity.issue.*;
+import org.mg.bugtracker.entity.issue.dto.IssueDTO;
+import org.mg.bugtracker.entity.issue.dto.RequestedIssue;
 import org.mg.bugtracker.entity.project.Project;
 import org.mg.bugtracker.entity.user.Person;
 
@@ -30,14 +32,19 @@ public interface IssueMapper {
     @Mapping(target = "issueTagIds", source = "issueTags", qualifiedByName = "getIssueTagIds")
     IssueDTO toIssueDTO(Issue issue);
 
-    @Mapping(target = "issueTagIds", ignore = true)
     @Mapping(target = "issueId", ignore = true)
-    @Mapping(target = "commentIds", ignore = true)
+    @Mapping(target = "issueTags", ignore = true)
+    @Mapping(target = "lastUpdate", ignore = true)
+    @Mapping(target = "dateCreated", ignore = true)
+    @Mapping(target = "comments", ignore = true)
     @Mapping(target = "deleted", ignore = true)
     @Mapping(target = "status", source = "status", qualifiedByName = "getStatus")
     @Mapping(target = "priority", source = "priority", qualifiedByName = "getPriority")
     @Mapping(target = "type", source = "type", qualifiedByName = "getType")
-    IssueDTO fromRequest(RequestedIssue requestedIssue);
+    @Mapping(target = "created", source = "createdId", qualifiedByName = "getPerson")
+    @Mapping(target = "assignee", source = "assigneeId", qualifiedByName = "getPerson")
+    @Mapping(target = "project", source = "projectId", qualifiedByName = "getProject")
+    Issue fromRequest(RequestedIssue requestedIssue);
 
     @Named("getPerson")
     default Person getPerson(Integer personId) {

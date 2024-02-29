@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.issue.Issue;
 import org.mg.bugtracker.entity.issue.IssueLog;
 import org.mg.bugtracker.entity.issue.dto.IssueLogDTO;
-import org.mg.bugtracker.entity.issue.dto.IssueLogMapper;
+import org.mg.bugtracker.mappers.issue.IssueLogMapper;
 import org.mg.bugtracker.repository.issue.IssueLogRepository;
 import org.mg.bugtracker.service.user.PersonService;
 import org.mockito.InjectMocks;
@@ -72,7 +72,7 @@ class IssueLogServiceTest {
         issue.setIssueId(issueId);
 
         // when
-        issueLogService.addLog(issue, newStatus);
+        issueLogService.addIssueLog(issue, newStatus);
 
         // then
         verify(issueLogRepository, times(1)).save(any(IssueLog.class));

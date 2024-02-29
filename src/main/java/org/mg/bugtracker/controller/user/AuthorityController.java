@@ -3,7 +3,7 @@ package org.mg.bugtracker.controller.user;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.controller.BugTrackerAbstractController;
 import org.mg.bugtracker.entity.user.dto.AuthorityDTO;
-import org.mg.bugtracker.entity.user.dto.AuthorityRequest;
+import org.mg.bugtracker.entity.user.dto.RequestedAuthority;
 import org.mg.bugtracker.service.user.AuthorityService;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +26,8 @@ public class AuthorityController extends BugTrackerAbstractController {
     }
 
     @PostMapping(value = "/authorities/add")
-    public AuthorityDTO addAuthority(@RequestBody AuthorityRequest authorityRequest) {
-        return authorityService.addAuthority(authorityRequest);
+    public AuthorityDTO addAuthority(@RequestBody RequestedAuthority requestedAuthority) {
+        return authorityService.addAuthority(requestedAuthority);
     }
 
     @DeleteMapping(value = "/authorities/{authorityId}")

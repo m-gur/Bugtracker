@@ -3,7 +3,7 @@ package org.mg.bugtracker.controller.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mg.bugtracker.entity.user.dto.AuthorityDTO;
-import org.mg.bugtracker.entity.user.dto.AuthorityRequest;
+import org.mg.bugtracker.entity.user.dto.RequestedAuthority;
 import org.mg.bugtracker.service.user.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -73,20 +73,20 @@ class AuthorityControllerTest {
     @Test
     void addAuthority_withoutParameters_returns200ok() throws Exception {
         // given
-        AuthorityRequest authorityRequest = new AuthorityRequest();
-        authorityRequest.setName("supp");
+        RequestedAuthority requestedAuthority = new RequestedAuthority();
+        requestedAuthority.setName("supp");
 
         AuthorityDTO authorityDTO = new AuthorityDTO();
         authorityDTO.setName("supp");
 
         // when
-        when(authorityService.addAuthority(authorityRequest)).thenReturn(authorityDTO);
+        when(authorityService.addAuthority(requestedAuthority)).thenReturn(authorityDTO);
 
         // then
         mockMvc.perform(post("/bugtracker/authorities/add")
                         .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN")))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(authorityRequest)))
+                        .content(objectMapper.writeValueAsString(requestedAuthority)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(authorityDTO.getName()));
     }

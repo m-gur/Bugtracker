@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.user.Login;
 import org.mg.bugtracker.entity.user.Person;
 import org.mg.bugtracker.entity.user.dto.PersonDTO;
-import org.mg.bugtracker.entity.user.dto.PersonMapper;
 import org.mg.bugtracker.entity.user.dto.RequestedPerson;
+import org.mg.bugtracker.mappers.user.PersonMapper;
 import org.mg.bugtracker.repository.user.LoginRepository;
 import org.mg.bugtracker.repository.user.PersonRepository;
 import org.springframework.stereotype.Service;
@@ -39,14 +39,8 @@ public class PersonService {
 
     public PersonDTO addPerson(RequestedPerson person) {
         Login newLogin = loginService.createLogin(person);
-        Person newPerson = new Person();
-        newPerson.setName(person.getName());
-        newPerson.setSurname(person.getSurname());
-        newPerson.setLogin(newLogin);
-        newPerson.setDeleted(false);
-        personRepository.save(newPerson);
-
-        return personMapper.toPersonDTO(newPerson);
+        Person newPerson = createPerson(person, newLogin);
+        return personMapper.toPersonDTO(personRepository.save(newPerson));
     }
 
     public void deletePerson(int personId) {
@@ -58,5 +52,12 @@ public class PersonService {
         Login loginFromContext = getLoginFromContext();
         return personRepository.findPersonByLoginId(loginFromContext.getLoginId())
                 .orElseThrow(() -> new RuntimeException("Cannot find person with existed login!"));
+    }
+
+    private Person createPerson(RequestedPerson requestedPerson, Login login) {
+        Person newPerson = personMapper.fromRequest(requestedPerson);
+        newPerson.setLogin(login);
+        newPerson.setDeleted(false);
+        return newPerson;
     }
 }

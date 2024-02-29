@@ -5,9 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.issue.Issue;
 import org.mg.bugtracker.entity.issue.Status;
 import org.mg.bugtracker.entity.issue.dto.IssueDTO;
-import org.mg.bugtracker.entity.issue.dto.IssueMapper;
 import org.mg.bugtracker.entity.issue.dto.RequestedIssue;
 import org.mg.bugtracker.entity.user.Person;
+import org.mg.bugtracker.mappers.issue.IssueMapper;
 import org.mg.bugtracker.repository.comment.AttachmentRepository;
 import org.mg.bugtracker.repository.comment.CommentRepository;
 import org.mg.bugtracker.repository.issue.IssueRepository;
@@ -138,8 +138,7 @@ class IssueServiceTest {
         issueDTO.setCreatedId(createdId);
 
         // when
-        when(issueMapper.fromRequest(requestedIssue)).thenReturn(issueDTO);
-        when(issueMapper.toIssue(any(IssueDTO.class))).thenReturn(issue);
+        when(issueMapper.fromRequest(requestedIssue)).thenReturn(issue);
         when(issueRepository.save(any(Issue.class))).thenReturn(issue);
         when(issueMapper.toIssueDTO(any(Issue.class))).thenReturn(issueDTO);
         IssueDTO addedIssue = issueService.addIssue(requestedIssue);

@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.project.Project;
 import org.mg.bugtracker.entity.project.dto.ProjectDTO;
-import org.mg.bugtracker.entity.project.dto.ProjectMapper;
 import org.mg.bugtracker.entity.project.dto.RequestedProject;
+import org.mg.bugtracker.mappers.project.ProjectMapper;
 import org.mg.bugtracker.repository.project.ProjectRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -97,8 +97,7 @@ class ProjectServiceTest {
 
         // when
         when(projectRepository.findByName(requestedProject.getName())).thenReturn(Optional.empty());
-        when(projectMapper.fromRequest(requestedProject)).thenReturn(projectDTO);
-        when(projectMapper.toProject(any(ProjectDTO.class))).thenReturn(project);
+        when(projectMapper.fromRequest(requestedProject)).thenReturn(project);
         when(projectRepository.save(any(Project.class))).thenReturn(project);
         when(projectMapper.toProjectDTO(project)).thenReturn(projectDTO);
         ProjectDTO addedProject = projectService.addProject(requestedProject);

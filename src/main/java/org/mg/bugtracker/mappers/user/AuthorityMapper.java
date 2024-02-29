@@ -1,8 +1,10 @@
-package org.mg.bugtracker.entity.user.dto;
+package org.mg.bugtracker.mappers.user;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mg.bugtracker.entity.user.Authority;
+import org.mg.bugtracker.entity.user.dto.AuthorityDTO;
+import org.mg.bugtracker.entity.user.dto.RequestedAuthority;
 
 @Mapper
 public interface AuthorityMapper {
@@ -13,5 +15,5 @@ public interface AuthorityMapper {
 
     @Mapping(target = "authorityId", ignore = true)
     @Mapping(target = "deleted", ignore = true)
-    Authority fromAuthorityRequest(AuthorityRequest authorityRequest);
+    Authority fromAuthorityRequest(RequestedAuthority requestedAuthority);
 }

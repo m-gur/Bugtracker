@@ -1,10 +1,12 @@
-package org.mg.bugtracker.entity.project.dto;
+package org.mg.bugtracker.mappers.project;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mg.bugtracker.entity.issue.Issue;
 import org.mg.bugtracker.entity.project.Project;
+import org.mg.bugtracker.entity.project.dto.ProjectDTO;
+import org.mg.bugtracker.entity.project.dto.RequestedProject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,11 +21,14 @@ public interface ProjectMapper {
     @Mapping(target = "issueIds", source = "issues", qualifiedByName = "getIssueIds")
     ProjectDTO toProjectDTO(Project project);
 
-    @Mapping(target = "issueIds", ignore = true)
-    @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "projectId", ignore = true)
+    @Mapping(target = "issues", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
     @Mapping(target = "dateCreated", ignore = true)
-    ProjectDTO fromRequest(RequestedProject requestedProject);
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "code", source = "code")
+    @Mapping(target = "description", source = "description")
+    Project fromRequest(RequestedProject requestedProject);
 
     @Named("getIssues")
     default List<Issue> getIssues(List<Integer> issueIds) {

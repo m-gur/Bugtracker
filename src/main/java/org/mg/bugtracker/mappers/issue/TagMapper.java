@@ -1,8 +1,10 @@
-package org.mg.bugtracker.entity.issue.dto;
+package org.mg.bugtracker.mappers.issue;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mg.bugtracker.entity.issue.Tag;
+import org.mg.bugtracker.entity.issue.dto.RequestedTag;
+import org.mg.bugtracker.entity.issue.dto.TagDTO;
 
 @Mapper
 public interface TagMapper {

@@ -5,8 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.user.Login;
 import org.mg.bugtracker.entity.user.Person;
 import org.mg.bugtracker.entity.user.dto.PersonDTO;
-import org.mg.bugtracker.entity.user.dto.PersonMapper;
 import org.mg.bugtracker.entity.user.dto.RequestedPerson;
+import org.mg.bugtracker.mappers.user.PersonMapper;
 import org.mg.bugtracker.repository.user.LoginRepository;
 import org.mg.bugtracker.repository.user.PersonRepository;
 import org.mockito.InjectMocks;
@@ -98,8 +98,13 @@ class PersonServiceTest {
         PersonDTO dto = new PersonDTO();
         dto.setName(requestedPerson.getName());
 
+        Person person = new Person();
+        person.setName(requestedPerson.getName());
+
         // when
+        when(personMapper.fromRequest(requestedPerson)).thenReturn(person);
         when(personMapper.toPersonDTO(any(Person.class))).thenReturn(dto);
+        when(personRepository.save(any(Person.class))).thenReturn(person);
         PersonDTO personDTO = personService.addPerson(requestedPerson);
 
         // then

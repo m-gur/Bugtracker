@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.user.Authority;
 import org.mg.bugtracker.entity.user.dto.AuthorityDTO;
-import org.mg.bugtracker.entity.user.dto.AuthorityMapper;
-import org.mg.bugtracker.entity.user.dto.AuthorityRequest;
+import org.mg.bugtracker.entity.user.dto.RequestedAuthority;
+import org.mg.bugtracker.mappers.user.AuthorityMapper;
 import org.mg.bugtracker.repository.user.AuthorityRepository;
 import org.mg.bugtracker.repository.user.LoginRepository;
 import org.mockito.InjectMocks;
@@ -88,13 +88,13 @@ class AuthorityServiceTest {
         authorityDTO.setAuthorityId(1);
         authorityDTO.setName("supp");
         Authority authorityToSave = new Authority();
-        AuthorityRequest authorityRequest = new AuthorityRequest("supp");
+        RequestedAuthority requestedAuthority = new RequestedAuthority("supp");
 
         // when
-        when(authorityMapper.fromAuthorityRequest(authorityRequest)).thenReturn(authorityToSave);
+        when(authorityMapper.fromAuthorityRequest(requestedAuthority)).thenReturn(authorityToSave);
         when(authorityMapper.toAuthorityDTO(authorityToSave)).thenReturn(authorityDTO);
         when(authorityRepository.save(authorityToSave)).thenReturn(authorityToSave);
-        AuthorityDTO savedDto = authorityService.addAuthority(authorityRequest);
+        AuthorityDTO savedDto = authorityService.addAuthority(requestedAuthority);
 
         // then
         assertNotNull(savedDto);
