@@ -12,6 +12,7 @@ import org.mg.bugtracker.repository.comment.AttachmentRepository;
 import org.mg.bugtracker.repository.comment.CommentRepository;
 import org.mg.bugtracker.repository.issue.IssueRepository;
 import org.mg.bugtracker.service.batch.BatchJobService;
+import org.mg.bugtracker.service.user.PersonService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -41,6 +42,8 @@ class IssueServiceTest {
     private IssueRepository issueRepository;
     @Mock
     private IssueLogService issueLogService;
+    @Mock
+    private PersonService personService;
     @Mock
     private BatchJobService batchJobService;
     @Mock
@@ -123,19 +126,19 @@ class IssueServiceTest {
     @Test
     void addIssue_withoutParameters_successfulAddedIssue() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         // given
-        int createdId = 1;
+        int assigneeId = 1;
         Person person = new Person();
-        person.setPersonId(createdId);
+        person.setPersonId(assigneeId);
 
         RequestedIssue requestedIssue = new RequestedIssue();
-        requestedIssue.setCreatedId(createdId);
+        requestedIssue.setAssigneeId(assigneeId);
 
         Issue issue = new Issue();
         issue.setIssueId(1);
-        issue.setCreated(person);
+        issue.setAssignee(person);
 
         IssueDTO issueDTO = new IssueDTO();
-        issueDTO.setCreatedId(createdId);
+        issueDTO.setAssigneeId(assigneeId);
 
         // when
         when(issueMapper.fromRequest(requestedIssue)).thenReturn(issue);
@@ -144,7 +147,7 @@ class IssueServiceTest {
         IssueDTO addedIssue = issueService.addIssue(requestedIssue);
 
         // then
-        assertEquals(requestedIssue.getCreatedId(), addedIssue.getCreatedId());
+        assertEquals(requestedIssue.getAssigneeId(), addedIssue.getAssigneeId());
     }
 
     @Test

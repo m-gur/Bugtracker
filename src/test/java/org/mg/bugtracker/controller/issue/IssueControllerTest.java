@@ -94,10 +94,10 @@ class IssueControllerTest {
     void addIssue_withoutParameters_returns200ok() throws Exception {
         // given
         RequestedIssue requestedIssue = new RequestedIssue();
-        requestedIssue.setCreatedId(1);
+        requestedIssue.setAssigneeId(1);
 
         IssueDTO issueDTO = new IssueDTO();
-        issueDTO.setCreatedId(1);
+        issueDTO.setAssigneeId(1);
 
         // when
         when(issueService.addIssue(requestedIssue)).thenReturn(issueDTO);
@@ -109,7 +109,7 @@ class IssueControllerTest {
                         .content(objectMapper.writeValueAsString(requestedIssue))
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.createdId").value(issueDTO.getCreatedId()));
+                .andExpect(jsonPath("$.assigneeId").value(issueDTO.getAssigneeId()));
     }
 
     @Test

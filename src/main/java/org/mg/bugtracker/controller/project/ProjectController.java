@@ -30,6 +30,11 @@ public class ProjectController extends BugTrackerAbstractController {
         return projectService.addProject(requestedProject);
     }
 
+    @PutMapping(value = "/projects/{projectId}")
+    public void enableProject(@PathVariable int projectId) {
+        projectService.enableProject(projectId);
+    }
+
     @DeleteMapping(value = "/projects/{projectId}")
     public void disableProject(@PathVariable int projectId) {
         projectService.disableProject(projectId);

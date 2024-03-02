@@ -23,7 +23,7 @@ class LoginTest {
                         .param("username", "admin")
                         .param("password", "admin"))
                 .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/index.html"));
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/admin-panel.html"));
     }
 
     @Test

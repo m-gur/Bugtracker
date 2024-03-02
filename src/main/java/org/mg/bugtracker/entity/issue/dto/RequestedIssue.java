@@ -25,8 +25,6 @@ public class RequestedIssue {
 
     private List<Integer> tagIds;
 
-    private Integer createdId;
-
     private Integer assigneeId;
 
     private Integer projectId;

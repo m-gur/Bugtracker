@@ -38,10 +38,10 @@ public interface IssueMapper {
     @Mapping(target = "dateCreated", ignore = true)
     @Mapping(target = "comments", ignore = true)
     @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "created", ignore = true)
     @Mapping(target = "status", source = "status", qualifiedByName = "getStatus")
     @Mapping(target = "priority", source = "priority", qualifiedByName = "getPriority")
     @Mapping(target = "type", source = "type", qualifiedByName = "getType")
-    @Mapping(target = "created", source = "createdId", qualifiedByName = "getPerson")
     @Mapping(target = "assignee", source = "assigneeId", qualifiedByName = "getPerson")
     @Mapping(target = "project", source = "projectId", qualifiedByName = "getProject")
     Issue fromRequest(RequestedIssue requestedIssue);

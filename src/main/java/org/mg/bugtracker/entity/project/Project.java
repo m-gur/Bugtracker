@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE projects SET enabled = 1 WHERE project_id = ?", check = ResultCheckStyle.COUNT)
+@SQLDelete(sql = "UPDATE projects SET enabled = 0 WHERE project_id = ?", check = ResultCheckStyle.COUNT)
 public class Project {
 
     @Id

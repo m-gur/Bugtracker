@@ -18,4 +18,12 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
             WHERE comment.issue.issueId = :issueId
             """)
     void deleteByIssueId(int issueId);
+
+    @Query(value = """
+            SELECT comment
+            FROM Comment comment
+            WHERE comment.issue.issueId = :issueId
+            AND comment.deleted = false
+            """)
+    List<Comment> findAllByIssueId(int issueId);
 }

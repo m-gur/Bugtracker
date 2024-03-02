@@ -1,5 +1,6 @@
 package org.mg.bugtracker.service.user;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.user.Login;
 import org.mg.bugtracker.entity.user.Person;
@@ -43,6 +44,7 @@ public class PersonService {
         return personMapper.toPersonDTO(personRepository.save(newPerson));
     }
 
+    @Transactional
     public void deletePerson(int personId) {
         loginRepository.deleteByPersonId(personId);
         personRepository.deleteById(personId);

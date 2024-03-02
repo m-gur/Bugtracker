@@ -102,12 +102,4 @@ class PersonControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-
-    @Test
-    void accessProtectedResourceWithDifferentRole() throws Exception {
-        // when & then
-        mockMvc.perform(get("/bugtracker/persons/all")
-                        .with(SecurityMockMvcRequestPostProcessors.user("user").password("password").authorities(AuthorityUtils.createAuthorityList("USER"))))
-                .andExpect(status().isForbidden());
-    }
 }

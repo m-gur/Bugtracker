@@ -27,6 +27,11 @@ public class CommentController extends BugTrackerAbstractController {
         return commentService.getCommentById(commentId);
     }
 
+    @GetMapping(value = "/issues/comments/{issueId}")
+    public List<CommentDTO> getCommentsByIssueId(@PathVariable int issueId) {
+        return commentService.getCommentsByIssueId(issueId);
+    }
+
     @PostMapping(value = "/comments/add")
     public CommentDTO addComment(@ModelAttribute RequestedComment requestedComment, @RequestParam("file") MultipartFile multipartFile) throws IOException {
         return commentService.addComment(requestedComment, multipartFile);

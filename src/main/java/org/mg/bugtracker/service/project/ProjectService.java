@@ -1,6 +1,7 @@
 package org.mg.bugtracker.service.project;
 
 import jakarta.persistence.EntityExistsException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.project.Project;
 import org.mg.bugtracker.entity.project.dto.ProjectDTO;
@@ -41,6 +42,11 @@ public class ProjectService {
             return projectMapper.toProjectDTO(projectRepository.save(newProject));
         }
         else throw new EntityExistsException("Cannot create project with provided name!");
+    }
+
+    @Transactional
+    public void enableProject(int projectId) {
+        projectRepository.enableProjectById(projectId);
     }
 
     public void disableProject(int projectId) {

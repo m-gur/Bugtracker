@@ -1,7 +1,9 @@
 package org.mg.bugtracker.service.user;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.user.Authority;
+import org.mg.bugtracker.entity.user.Login;
 import org.mg.bugtracker.entity.user.dto.AuthorityDTO;
 import org.mg.bugtracker.entity.user.dto.RequestedAuthority;
 import org.mg.bugtracker.mappers.user.AuthorityMapper;
@@ -12,12 +14,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.mg.bugtracker.configure.LoginContextHolder.getLoginFromContext;
+
 @Service
 @RequiredArgsConstructor
 public class AuthorityService {
 
     private final AuthorityRepository authorityRepository;
     private final LoginRepository loginRepository;
+    private final PersonService personService;
     private final AuthorityMapper authorityMapper;
 
     public List<AuthorityDTO> getAll() {
@@ -38,8 +43,14 @@ public class AuthorityService {
         return authorityMapper.toAuthorityDTO(authorityRepository.save(authorityToSave));
     }
 
+    @Transactional
     public void deleteAuthority(int authorityId) {
         loginRepository.deleteByAuthorityId(authorityId);
         authorityRepository.deleteById(authorityId);
+    }
+
+    public String getAuthority() {
+        Login contextLogin = getLoginFromContext();
+        return authorityRepository.findAuthorityByLoginId(contextLogin.getLoginId());
     }
 }

@@ -25,6 +25,11 @@ public class AuthorityController extends BugTrackerAbstractController {
         return authorityService.getAuthorityById(authorityId);
     }
 
+    @GetMapping(value = "/default-authority")
+    public String getAuthority() {
+        return authorityService.getAuthority();
+    }
+
     @PostMapping(value = "/authorities/add")
     public AuthorityDTO addAuthority(@RequestBody RequestedAuthority requestedAuthority) {
         return authorityService.addAuthority(requestedAuthority);

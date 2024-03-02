@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -53,7 +54,7 @@ class CommentControllerTest {
 
         // then
         mockMvc.perform(get("/bugtracker/comments/all")
-                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN")))
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(commentDTOList.size()));
@@ -72,7 +73,7 @@ class CommentControllerTest {
 
         // then
         mockMvc.perform(get("/bugtracker/comments/{commentId}", commentId)
-                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN")))
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.personId").value(personId));
     }
@@ -91,7 +92,7 @@ class CommentControllerTest {
         // then
         mockMvc.perform(MockMvcRequestBuilders.multipart("/bugtracker/comments/add")
                         .file(multipartFile)
-                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN")))
                         .contentType(MediaType.MULTIPART_FORM_DATA)
                         .content(objectMapper.writeValueAsString(requestedComment))
                         .with(csrf()))
@@ -104,7 +105,7 @@ class CommentControllerTest {
         int commentId = 1;
         // when & then
         mockMvc.perform(delete("/bugtracker/comments/{commentId}", commentId)
-                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").roles("ADMIN"))
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isOk());

@@ -1,5 +1,6 @@
 package org.mg.bugtracker.service.comment;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.comment.Comment;
 import org.mg.bugtracker.entity.comment.dto.CommentDTO;
@@ -51,6 +52,7 @@ public class CommentService {
         return commentMapper.toCommentDTO(commentToSave);
     }
 
+    @Transactional
     public void deleteComment(int commentId) {
         attachmentRepository.deleteAttachmentsByCommentId(commentId);
         commentRepository.deleteById(commentId);
@@ -63,5 +65,12 @@ public class CommentService {
         Person actuallyLoggedPerson = personService.findPersonForContextLogin();
         commentToSave.setPerson(actuallyLoggedPerson);
         return commentToSave;
+    }
+
+    public List<CommentDTO> getCommentsByIssueId(int issueId) {
+        return commentRepository.findAllByIssueId(issueId)
+                .stream()
+                .map(commentMapper::toCommentDTO)
+                .collect(Collectors.toList());
     }
 }

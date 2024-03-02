@@ -120,6 +120,6 @@ INSERT INTO persons VALUES (1, 'admin', 'admin', 1, false);
 INSERT INTO tags VALUES (1, 'BUG', false);
 INSERT INTO projects VALUES (1, 'BugTracker', true, '2024-02-11', 'BG', 'BugTracker Project');
 INSERT INTO issues VALUES (1, 1, 'NEW', 'LOW', 'BUG', 'Not working', 'Cannot log in', 'BNWCLI', 1, null, '2024-02-11', '2024-02-11', false);
-INSERT INTO comments VALUES (1, '2024-02-11', '2024-02-11', '', 1, 1, false);
+INSERT INTO comments VALUES (1, '2024-02-11', '2024-02-11', 'content', 1, 1, false);
 INSERT INTO issue_logs VALUES (1, 1, 1, 'NEW', 'IN_PROGRESS', '2024-02-11');
 INSERT INTO issue_tags VALUES (1, 1);

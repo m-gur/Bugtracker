@@ -4,8 +4,10 @@ import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.mg.bugtracker.entity.user.Authority;
 import org.mg.bugtracker.entity.user.Login;
+import org.mg.bugtracker.entity.user.dto.LoginDTO;
 import org.mg.bugtracker.entity.user.dto.RequestedLogin;
 import org.mg.bugtracker.entity.user.dto.RequestedPerson;
+import org.mg.bugtracker.mappers.user.LoginMapper;
 import org.mg.bugtracker.repository.user.AuthorityRepository;
 import org.mg.bugtracker.repository.user.LoginRepository;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -19,6 +21,7 @@ public class LoginService {
 
     private final AuthorityRepository authorityRepository;
     private final LoginRepository loginRepository;
+    private final LoginMapper loginMapper;
 
     public void createLoginWithDefaultAuthority(RequestedLogin login) {
         Optional<Login> foundLogin = loginRepository.findLoginByLogin(login.getLogin());
@@ -48,5 +51,11 @@ public class LoginService {
             return newLogin;
         }
         else throw new EntityExistsException("Cannot create login!");
+    }
+
+    public LoginDTO getLoginById(int loginId) {
+        return loginRepository.findById(loginId)
+                .map(loginMapper::toLoginDTO)
+                .orElseThrow(() -> new RuntimeException("Cannot find login with requested id!"));
     }
 }
