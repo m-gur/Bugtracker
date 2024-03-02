@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Issues</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <script src="navigation.js"></script>
+</head>
+<style>
+    body {
+        background-color: lightgray;
+        font-family: Arial, "Arial Black", serif;
+    }
+</style>
+<body>
+<h2>Issues</h2>
+<div id="errorMessage" style="color: red; font-weight: bold; text-align: center;"></div>
+<table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+    <tr>
+        <th>Issue Id</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Code</th>
+        <th>Issue Tags</th>
+        <th>Created</th>
+        <th>Assignee</th>
+        <th>Date created</th>
+        <th>Last update</th>
+        <th>Comments</th>
+        <th>Project code</th>
+        <th>Deleted</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody id="issuesTableBody"></tbody>
+</table>
+
+<script>
+    fetch('/bugtracker/issues/all')
+        .then(response => {
+            if (response.status === 403) {
+                throw new Error('No access');
+            } else if (!response.ok) {
+                throw new Error('An error occurred: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const issuesTableBody = document.getElementById('issuesTableBody');
+
+            data.forEach(issue => {
+                const row = document.createElement('tr');
+
+                const issueIdCell = document.createElement('td');
+                issueIdCell.textContent = issue.issueId;
+                row.appendChild(issueIdCell);
+
+                const statusCell = document.createElement('td');
+                statusCell.textContent = issue.status;
+                row.appendChild(statusCell);
+
+                const priorityCell = document.createElement('td');
+                priorityCell.textContent = issue.priority;
+                row.appendChild(priorityCell);
+
+                const typeCell = document.createElement('td');
+                typeCell.textContent = issue.type;
+                row.appendChild(typeCell);
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = issue.name;
+                row.appendChild(nameCell);
+
+                const descriptionCell = document.createElement('td');
+                descriptionCell.textContent = issue.description;
+                row.appendChild(descriptionCell);
+
+                const codeCell = document.createElement('td');
+                codeCell.textContent = issue.code;
+                row.appendChild(codeCell);
+
+                const issueTagsCell = document.createElement('td');
+
+                const tagNames = issue.issueTagIds.map(tag => {
+                    return fetch(`/bugtracker/tags/${tag.tagId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(tagData => {
+                            return tagData.name;
+                        })
+                        .catch(error => {
+                            console.error('There was an error fetching tag data:', error);
+                            return 'Error fetching tag name';
+                        });
+                });
+
+                Promise.all(tagNames)
+                    .then(tagNames => {
+                        issueTagsCell.textContent = tagNames.join(', ');
+                    });
+
+                row.appendChild(issueTagsCell);
+
+                const createdIdCell = document.createElement('td');
+                fetch(`/bugtracker/persons/${issue.createdId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(createdData => {
+                        createdIdCell.textContent = createdData.name;
+                    })
+                    .catch(error => {
+                        console.error('There was an error fetching created data:', error);
+                        createdIdCell.textContent = 'Error fetching created name';
+                    });
+                row.appendChild(createdIdCell);
+
+                const assigneeIdCell = document.createElement('td');
+                if (issue.assigneeId !== null) {
+                    fetch(`/bugtracker/persons/${issue.assigneeId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(createdData => {
+                            assigneeIdCell.textContent = createdData.name;
+                        })
+                        .catch(error => {
+                            console.error('There was an error fetching assignee data:', error);
+                            assigneeIdCell.textContent = 'Error fetching assignee name';
+                        });
+                } else {
+                    assigneeIdCell.textContent = 'no assignment';
+                }
+                row.appendChild(assigneeIdCell);
+
+                const dateCreatedCell = document.createElement('td');
+                dateCreatedCell.textContent = issue.dateCreated;
+                row.appendChild(dateCreatedCell);
+
+                const lastUpdateCell = document.createElement('td');
+                lastUpdateCell.textContent = issue.lastUpdate;
+                row.appendChild(lastUpdateCell);
+
+                const commentsCell = document.createElement('td');
+                if (issue.commentIds && issue.commentIds.length > 0) {
+                    const commentsButton = document.createElement('button');
+                    commentsButton.textContent = 'View Comments';
+                    commentsButton.addEventListener('click', function() {
+                        window.location.href = `/issue-comments.html?issueId=${issue.issueId}`;
+                    });
+                    commentsCell.appendChild(commentsButton);
+                } else {
+                    commentsCell.textContent = 'No comments';
+                }
+                row.appendChild(commentsCell);
+
+                const projectIdCell = document.createElement('td');
+                fetch(`/bugtracker/projects/${issue.projectId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(projectData => {
+                        projectIdCell.textContent = projectData.code;
+                    })
+                    .catch(error => {
+                        console.error('There was an error fetching project data:', error);
+                        projectIdCell.textContent = 'Error fetching project code';
+                    });
+                row.appendChild(projectIdCell);
+
+                const deletedCell = document.createElement('td');
+                deletedCell.textContent = issue.deleted;
+                row.appendChild(deletedCell);
+
+                const actionCell = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', function() {
+                    deleteIssue(issue.issueId);
+                });
+                actionCell.appendChild(deleteButton);
+
+                const updateIssueCell = document.createElement('td');
+                    const updateIssueButton = document.createElement('button');
+                    updateIssueButton.textContent = 'Update issue';
+                    updateIssueButton.addEventListener('click', function() {
+                        window.location.href = `/update-issue.html?issueId=${issue.issueId}`;
+                    });
+                    updateIssueCell.appendChild(updateIssueButton);
+                row.appendChild(updateIssueCell);
+                row.appendChild(actionCell);
+
+                issuesTableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = error.message;
+            console.error('An error occurred while fetching data:', error);
+        });
+
+    function deleteIssue(issueId) {
+        fetch(`/bugtracker/issues/${issueId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('An error occurred: ' + response.status);
+                }
+                console.log('Issue deleted successfully.');
+            })
+            .catch(error => {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = error.message;
+                console.error('An error occurred while deleting issue:', error);
+            });
+    }
+</script>
+<a href="#" id="welcomeLink">Welcome Page</a>
+</body>
+</html>

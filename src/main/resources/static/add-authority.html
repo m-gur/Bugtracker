@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
-    <title>Add Comment</title>
+    <title>Add Authority</title>
     <script src="navigation.js"></script>
 </head>
 <style>
@@ -38,25 +38,14 @@
                             <div class="card-body p-md-5 mx-md-4">
 
                                 <div class="text-center">
-                                    <h4 class="mt-1 mb-5 pb-1">Add Comment</h4>
+                                    <h4 class="mt-1 mb-5 pb-1">Add Authority</h4>
                                 </div>
 
-                                <form id="commentForm" method="post" action="/bugtracker/comments/add" enctype="multipart/form-data">
+                                <form id="authorityForm" method="post" action="/bugtracker/authorities/add">
 
-                                    <div class="form-outline mb-4"> Content
-                                        <label for="content" class="sr-only">Content</label>
-                                        <input type="text" id="content" name="content" class="form-control" placeholder="Content" required autofocus>
-                                    </div>
-
-                                    <div class="form-outline mb-4"> Issue
-                                        <label for="issueId" class="sr-only">Issue ID</label>
-                                        <select id="issueId" name="issueId" class="form-control" required>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-outline mb-4"> Attachment
-                                        <label for="file" class="sr-only">Choose file</label>
-                                        <input type="file" id="file" name="file" class="form-control">
+                                    <div class="form-outline mb-4"> Name
+                                        <label for="name" class="sr-only">Name</label>
+                                        <input type="text" id="name" name="name" class="form-control" placeholder="name">
                                     </div>
 
                                     <div class="text-center pt-1 mb-5 pb-1">
@@ -72,41 +61,22 @@
         </div>
     </div>
 </section>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/bugtracker/issues/all')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const issueIdSelect = document.getElementById('issueId');
-                issueIdSelect.innerHTML = '';
-
-                data.forEach(issue => {
-                    const option = document.createElement('option');
-                    option.value = issue.issueId;
-                    option.textContent = issue.name;
-                    issueIdSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('There was an error fetching issues:', error);
-            });
-    });
-
-    document.getElementById("commentForm").addEventListener("submit", function(event) {
+    document.getElementById("submitButton").addEventListener("click", function() {
         event.preventDefault();
 
-        var form = document.getElementById("commentForm");
-        var formData = new FormData(form);
+        var name = document.getElementById("name").value;
 
-        fetch('/bugtracker/comments/add', {
+        var formData = {
+            name: name
+        };
+
+        fetch('/bugtracker/authorities/add', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
         })
             .then(response => {
                 if (!response.ok) {

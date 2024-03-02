@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     <title>Add Login Page</title>
 </head>
 <style>
@@ -30,14 +30,14 @@
 <section class="h-100 gradient-form" style="background-color: #eee;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-xl-5">
+            <div class="col-xl-10">
                 <div class="card rounded-3 text-black">
                     <div class="row g-0">
                         <div class="col-lg-6">
                             <div class="card-body p-md-5 mx-md-4">
 
                                 <div class="text-center">
-                                    <h4 class="mt-1 mb-5 pb-1">Bugtrakcer</h4>
+                                    <h4 class="mt-1 mb-5 pb-1">Bugtracker</h4>
                                 </div>
 
                                 <form id="loginForm" method="post" action="/add-login">
@@ -46,17 +46,17 @@
                                     </div>
                                         <p>Please create login to your account</p>
 
-                                        <div class="form-outline mb-4">
+                                        <div class="form-outline mb-4"> Username
                                             <label for="username" class="sr-only">Username</label>
                                             <input type="text" id="username" name="login" class="form-control" placeholder="Username" required autofocus>
                                         </div>
 
-                                        <div class="form-outline mb-4">
+                                        <div class="form-outline mb-4"> Password
                                             <label for="password" class="sr-only">Password</label>
                                             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
                                         </div>
 
-                                        <div class="form-outline mb-4">
+                                        <div class="form-outline mb-4"> Email
                                             <label for="email" class="sr-only">Email</label>
                                             <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
                                         </div>
