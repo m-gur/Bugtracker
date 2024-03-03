@@ -92,6 +92,18 @@ class ProjectControllerTest {
     }
 
     @Test
+    void enableProject_withoutParameters_returns200ok() throws Exception {
+        // given
+        int projectId = 1;
+
+        // when & then
+        mockMvc.perform(put("/bugtracker/projects/{projectId}", projectId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN")))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void disableProject_withoutParameters_returns200ok() throws Exception {
         // given
         int projectId = 1;

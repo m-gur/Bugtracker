@@ -12,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.mg.bugtracker.utils.AttachmentValidator.validateAttachmentType;
 
@@ -23,13 +21,6 @@ public class AttachmentService {
 
     private final AttachmentRepository attachmentRepository;
     private final AttachmentMapper attachmentMapper;
-
-    public List<AttachmentDTO> getAll() {
-        return attachmentRepository.findAll()
-                .stream()
-                .map(attachmentMapper::toAttachmentDTO)
-                .collect(Collectors.toList());
-    }
 
     public void addAttachment(Comment comment, MultipartFile multipartFile) throws IOException {
         String contentType = multipartFile.getContentType();
@@ -43,7 +34,7 @@ public class AttachmentService {
     public AttachmentDTO getAttachmentById(Integer attachmentId) {
         return attachmentRepository.findById(attachmentId)
                 .map(attachmentMapper::toAttachmentDTO)
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Cannot find attachment with requested id!"));
     }
 
     private Attachment createAttachment(String contentType, MultipartFile multipartFile, Comment comment) throws IOException {

@@ -79,6 +79,25 @@ class CommentControllerTest {
     }
 
     @Test
+    void getCommentsByIssueId_withoutParameters_returns200ok() throws Exception {
+        // given
+        int issueId = 1;
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        commentDTOS.add(new CommentDTO());
+        commentDTOS.add(new CommentDTO());
+
+        // when
+        when(commentService.getCommentsByIssueId(issueId)).thenReturn(commentDTOS);
+
+        // then
+        mockMvc.perform(get("/bugtracker/issues/comments/{issueId}", issueId)
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(commentDTOS.size()));
+    }
+
+    @Test
     void addComment_withoutParameters_returns200ok() throws Exception {
         // given
         int issueId = 1;

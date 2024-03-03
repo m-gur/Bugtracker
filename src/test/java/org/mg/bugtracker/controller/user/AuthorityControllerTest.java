@@ -19,8 +19,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -109,5 +108,20 @@ class AuthorityControllerTest {
         mockMvc.perform(get("/bugtracker/authorities/all")
                         .with(SecurityMockMvcRequestPostProcessors.user("user").password("password").authorities(AuthorityUtils.createAuthorityList("USER"))))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void getAuthority_withoutParameters_returns200ok() throws Exception {
+        // given
+        String authority = "ADMIN";
+
+        // when
+        when(authorityService.getAuthority()).thenReturn(authority);
+
+        // then
+        mockMvc.perform(get("/bugtracker/default-authority")
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin").password("admin").authorities(AuthorityUtils.createAuthorityList("ADMIN"))))
+                .andExpect(status().isOk())
+                .andExpect(content().string(authority));
     }
 }

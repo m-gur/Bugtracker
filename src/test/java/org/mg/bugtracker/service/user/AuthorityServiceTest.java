@@ -3,6 +3,7 @@ package org.mg.bugtracker.service.user;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.user.Authority;
+import org.mg.bugtracker.entity.user.Login;
 import org.mg.bugtracker.entity.user.dto.AuthorityDTO;
 import org.mg.bugtracker.entity.user.dto.RequestedAuthority;
 import org.mg.bugtracker.mappers.user.AuthorityMapper;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mg.bugtracker.configure.LoginContextHolder.setContextLogin;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -114,5 +116,21 @@ class AuthorityServiceTest {
         // then
         verify(loginRepository).deleteByAuthorityId(authority.getAuthorityId());
         verify(authorityRepository).deleteById(authority.getAuthorityId());
+    }
+
+    @Test
+    void getAuthority_withoutParameters_returnsAuthority() {
+        // given
+        String authority = "ADMIN";
+        Login login = new Login();
+        login.setLoginId(1);
+        setContextLogin(login);
+
+        // when
+        when(authorityRepository.findAuthorityByLoginId(anyInt())).thenReturn(authority);
+        String loginAuthority = authorityService.getAuthority();
+
+        // then
+        assertEquals(authority, loginAuthority);
     }
 }

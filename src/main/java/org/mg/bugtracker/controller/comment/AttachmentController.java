@@ -11,18 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class AttachmentController extends BugTrackerAbstractController {
 
     private final AttachmentService attachmentService;
-
-    @GetMapping(value = "/attachments/all")
-    public List<AttachmentDTO> getAll() {
-        return attachmentService.getAll();
-    }
 
     @GetMapping("/attachments/image/{attachmentId}")
     public ResponseEntity<byte[]> getImage(@PathVariable Integer attachmentId) throws HttpMediaTypeNotSupportedException {

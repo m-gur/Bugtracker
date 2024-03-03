@@ -121,6 +121,15 @@ class ProjectServiceTest {
     }
 
     @Test
+    void enableProject_withoutParameters_successEnable() {
+        // when
+        projectService.enableProject(anyInt());
+
+        // then
+        verify(projectRepository, times(1)).enableProjectById(anyInt());
+    }
+
+    @Test
     void disableProject_withoutParameters_successDisable() {
         // when
         projectService.disableProject(anyInt());

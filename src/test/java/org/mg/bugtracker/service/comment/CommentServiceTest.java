@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -139,4 +140,20 @@ class CommentServiceTest {
         verify(commentRepository).deleteById(comment.getCommentId());
     }
 
+    @Test
+    void getCommentsByIssueId_withoutParameters_returnsComments() {
+        // given
+        int issueId = 1;
+
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setIssueId(1);
+
+        // when
+        when(commentRepository.findAllByIssueId(issueId)).thenReturn(List.of(new Comment()));
+        when(commentMapper.toCommentDTO(any(Comment.class))).thenReturn(commentDTO);
+        List<CommentDTO> commentsByIssueId = commentService.getCommentsByIssueId(issueId);
+
+        // then
+        assertEquals(issueId, commentsByIssueId.get(0).getIssueId());
+    }
 }

@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mg.bugtracker.entity.user.Authority;
 import org.mg.bugtracker.entity.user.Login;
+import org.mg.bugtracker.entity.user.dto.LoginDTO;
 import org.mg.bugtracker.entity.user.dto.RequestedLogin;
 import org.mg.bugtracker.entity.user.dto.RequestedPerson;
+import org.mg.bugtracker.mappers.user.LoginMapper;
 import org.mg.bugtracker.repository.user.AuthorityRepository;
 import org.mg.bugtracker.repository.user.LoginRepository;
 import org.mockito.InjectMocks;
@@ -28,6 +30,8 @@ class LoginServiceTest {
     private LoginRepository loginRepository;
     @Mock
     private AuthorityRepository authorityRepository;
+    @Mock
+    private LoginMapper loginMapper;
 
     @Test
     void createLoginWithDefaultAuthority_withoutParameters_successfulCreatedLogin() {
@@ -112,5 +116,36 @@ class LoginServiceTest {
 
         // then
         assertThrows(RuntimeException.class, () -> loginService.createLogin(requestedPerson));
+    }
+
+    @Test
+    void getLoginById_withoutParameters_returnsEqualsLogin() {
+        // given
+        int loginId = 1;
+        String userLogin = "admin";
+
+        Login login = new Login();
+        login.setLoginId(1);
+        login.setLogin(userLogin);
+
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setLogin(userLogin);
+
+        // when
+        when(loginRepository.findById(loginId)).thenReturn(Optional.of(login));
+        when(loginMapper.toLoginDTO(any(Login.class))).thenReturn(loginDTO);
+        LoginDTO foundLogin = loginService.getLoginById(loginId);
+
+        // then
+        assertEquals(userLogin, foundLogin.getLogin());
+    }
+
+    @Test
+    void getLoginById_withoutParameters_throwsException() {
+        // when
+        when(loginRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        // then
+        assertThrows(RuntimeException.class, () -> loginService.getLoginById(anyInt()));
     }
 }
