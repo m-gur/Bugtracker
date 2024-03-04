@@ -20,8 +20,10 @@ public class HttpLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
         response.setStatus(HttpServletResponse.SC_OK);
         if (isAdmin(authentication)) {
             response.sendRedirect("/admin-panel.html");
+        } else if (isTechnician(authentication)){
+        response.sendRedirect("/technician-panel.html");
         } else {
-        response.sendRedirect("/user-panel.html");
+            response.sendRedirect("/user-panel.html");
         }
         clearAuthenticationAttributes(request);
     }
@@ -30,5 +32,11 @@ public class HttpLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         return authorities.stream()
                 .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase("ADMIN"));
+    }
+
+    private boolean isTechnician(Authentication authentication) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        return authorities.stream()
+                .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase("TECHNICIAN"));
     }
 }

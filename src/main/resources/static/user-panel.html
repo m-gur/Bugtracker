@@ -6,18 +6,45 @@
 </head>
 <style>
     body {
+        width: 100%;
         background-color: lightgray;
         font-family: Arial, "Arial Black",serif;
+    }
+    .container{
+        padding-top:1rem;
+        margin: 0 auto;
+        width: 561px;
+        gap: 20px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    .container div{
+        background-color: #ee7724;
+        text-align: center;
+    }
+    a{
+        display: block;
+        background-color: #ee7724;
+        width:150px;
+        padding: 15px 2px;
+        text-decoration: none;
+        color: black;
+    }
+    h1{
+        text-align: center;
     }
 </style>
 <body>
 <h1>Welcome user!</h1>
-<ul>
-    <li><a href="/comments.html">Comments</a></li>
-    <li><a href="/add-comment.html">Add comment</a></li>
-    <li><a href="/add-issue.html">Add issue</a></li>
-    <li><a href="/projects.html">Projects</a></li>
-    <li><a href="/logout.html">Logout</a></li>
-</ul>
+<div class="container">
+    <div><a href="/add-comment.html">Add comment</a></div>
+    <div><a href="/issues.html">Issues</a></div>
+    <div><a href="/add-issue.html">Add issue</a></div>
+    <div><a href="/projects.html">Projects</a></div>
+    <div><a href="/logout.html">Logout</a></div>
+</div>
 </body>
 </html>

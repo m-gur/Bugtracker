@@ -6,26 +6,53 @@
 </head>
 <style>
     body {
+        width: 100%;
         background-color: lightgray;
         font-family: Arial, "Arial Black",serif;
+    }
+    .container{
+        padding-top:1rem;
+        margin: 0 auto;
+        width: 561px;
+        gap: 20px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    .container div{
+        background-color: #ee7724;
+        text-align: center;
+    }
+    a{
+        display: block;
+        background-color: #ee7724;
+        width:150px;
+        padding: 15px 2px;
+        text-decoration: none;
+        color: black;
+    }
+    h1{
+        text-align: center;
     }
 </style>
 <body>
 <h1>Welcome admin!</h1>
-<ul>
-    <li><a href="/authorities.html">Authorities</a></li>
-    <li><a href="/add-authority.html">Add authority</a></li>
-    <li><a href="/comments.html">Comments</a></li>
-    <li><a href="/add-comment.html">Add comment</a></li>
-    <li><a href="/issues.html">Issues</a></li>
-    <li><a href="/add-issue.html">Add issue</a></li>
-    <li><a href="/persons.html">Persons</a></li>
-    <li><a href="/add-person.html">Add person</a></li>
-    <li><a href="/projects.html">Projects</a></li>
-    <li><a href="/add-project.html">Add project</a></li>
-    <li><a href="/add-tag.html">Add tag</a></li>
-    <li><a href="/logs.html">Logs</a></li>
-    <li><a href="/logout.html">Logout</a></li>
-</ul>
+<div class="container">
+    <div><a href="/authorities.html">Authorities</a></div>
+    <div><a href="/add-authority.html">Add authority</a></div>
+    <div><a href="/comments.html">Comments</a></div>
+    <div><a href="/add-comment.html">Add comment</a></div>
+    <div><a href="/issues.html">Issues</a></div>
+    <div><a href="/add-issue.html">Add issue</a></div>
+    <div><a href="/persons.html">Persons</a></div>
+    <div><a href="/add-person.html">Add person</a></div>
+    <div><a href="/projects.html">Projects</a></div>
+    <div><a href="/add-project.html">Add project</a></div>
+    <div><a href="/add-tag.html">Add tag</a></div>
+    <div><a href="/logs.html">Logs</a></div>
+    <div><a href="/logout.html">Logout</a></div>
+</div>
 </body>
 </html>

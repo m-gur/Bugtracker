@@ -78,12 +78,12 @@ public class SecurityConfig {
 
                 //pages
                 .requestMatchers("/add-project.html").hasAnyAuthority(extendedAuthority)
+                .requestMatchers("/comments.html").hasAnyAuthority(extendedAuthority)
                 .requestMatchers("/add-tag.html").hasAnyAuthority(extendedAuthority)
                 .requestMatchers("/update-issue.html").hasAnyAuthority(anyAuthority)
                 .requestMatchers("/add-comment.html").hasAnyAuthority(anyAuthority)
                 .requestMatchers("/add-issue.html").hasAnyAuthority(anyAuthority)
                 .requestMatchers("/projects.html").hasAnyAuthority(anyAuthority)
-                .requestMatchers("/comments.html").hasAnyAuthority(anyAuthority)
                 .requestMatchers("/issues.html").hasAnyAuthority(anyAuthority)
                 .requestMatchers("/add-authority.html").hasAuthority(adminAuthority)
                 .requestMatchers("/authorities.html").hasAuthority(adminAuthority)
@@ -93,6 +93,7 @@ public class SecurityConfig {
 
                 //panels
                 .requestMatchers("/user-panel.html").hasAnyAuthority(anyAuthority)
+                .requestMatchers("/technician-panel.html").hasAnyAuthority(extendedAuthority)
                 .requestMatchers("/admin-panel.html").hasAuthority(adminAuthority)
 
                 //add login
