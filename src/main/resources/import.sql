@@ -90,12 +90,12 @@ CREATE TABLE attachments
 
 CREATE TABLE issue_logs
 (
-    issue_log_id     INT PRIMARY KEY AUTO_INCREMENT,
-    person_id  INT NOT NULL,
-    issue_id   INT NOT NULL,
-    old_status VARCHAR(255) NOT NULL,
-    new_status VARCHAR(255) NOT NULL,
-    log_date       DATE NOT NULL,
+    issue_log_id  INT PRIMARY KEY AUTO_INCREMENT,
+    person_id     INT NOT NULL,
+    issue_id      INT NOT NULL,
+    old_status    VARCHAR(255) NOT NULL,
+    new_status    VARCHAR(255) NOT NULL,
+    log_date      DATE NOT NULL,
     FOREIGN KEY (person_id) REFERENCES persons (person_id),
     FOREIGN KEY (issue_id) REFERENCES issues (issue_id)
 );
@@ -109,6 +109,15 @@ CREATE TABLE issue_tags
     FOREIGN KEY (tag_id) REFERENCES tags (tag_id)
 );
 
+CREATE TABLE events
+(
+    event_id           INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    ip_address        VARCHAR(255) NOT NULL,
+    request_method    VARCHAR(255) NOT NULL,
+    request_uri       VARCHAR(255) NOT NULL,
+    user              VARCHAR(255) NOT NULL,
+    request_timestamp DATETIME NOT NULL
+);
 
 INSERT INTO authorities VALUES (1, 'ADMIN', false);
 INSERT INTO authorities VALUES (2, 'USER', false);
@@ -117,6 +126,8 @@ INSERT INTO logins VALUES (1, 'admin', '$2a$12$d44QFPfR3wflcIOvsn5WOOsovvvCmKwYz
 INSERT INTO logins VALUES (2, 'user', '$2a$12$0tJgWapBXp0emgI3b93WwOG7c7iQX1EPOkB05WgSRA0WWzoDgcGx2', 'user@user.user', 2, false);
 INSERT INTO logins VALUES (3, 'technician', '$2a$12$SDU8m/X0TfQJnhShWhEzie6Yk7qPTi59rvhO6gDx.AqXeZgU6gcXa', 'technician@technician.technician', 3, false);
 INSERT INTO persons VALUES (1, 'admin', 'admin', 1, false);
+INSERT INTO persons VALUES (2, 'user', 'user', 2, false);
+INSERT INTO persons VALUES (3, 'technician', 'technician', 3, false);
 INSERT INTO tags VALUES (1, 'BUG', false);
 INSERT INTO projects VALUES (1, 'BugTracker', true, '2024-02-11', 'BG', 'BugTracker Project');
 INSERT INTO issues VALUES (1, 1, 'NEW', 'LOW', 'BUG', 'Not working', 'Cannot log in', 'BNWCLI', 1, null, '2024-02-11', '2024-02-11', false);

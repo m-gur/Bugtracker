@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .requestMatchers("/bugtracker/issues/all",
                                  "/bugtracker/issues/add").hasAnyAuthority(anyAuthority)
                 .requestMatchers(HttpMethod.GET,"/bugtracker/issues/{issueId}").hasAnyAuthority(anyAuthority)
-                .requestMatchers(HttpMethod.DELETE,"/bugtracker/issues/{issueId}").hasAuthority(adminAuthority)
+                .requestMatchers(HttpMethod.DELETE,"/bugtracker/issues/{issueId}").hasAnyAuthority(extendedAuthority)
 
                 //attachments
                 .requestMatchers("/bugtracker/attachments/**").hasAnyAuthority(anyAuthority)
@@ -74,12 +74,14 @@ public class SecurityConfig {
                 .requestMatchers("/bugtracker/logins/{loginId}").hasAuthority(adminAuthority)
 
                 //logs
-                .requestMatchers("/bugtracker/issue-logs/all").hasAuthority(adminAuthority)
+                .requestMatchers("/bugtracker/issue-logs/all").hasAnyAuthority(extendedAuthority)
+                .requestMatchers("/tracking/logs").hasAuthority(adminAuthority)
 
                 //pages
                 .requestMatchers("/add-project.html").hasAnyAuthority(extendedAuthority)
                 .requestMatchers("/comments.html").hasAnyAuthority(extendedAuthority)
                 .requestMatchers("/add-tag.html").hasAnyAuthority(extendedAuthority)
+                .requestMatchers("/issue-logs.html").hasAnyAuthority(extendedAuthority)
                 .requestMatchers("/update-issue.html").hasAnyAuthority(anyAuthority)
                 .requestMatchers("/add-comment.html").hasAnyAuthority(anyAuthority)
                 .requestMatchers("/add-issue.html").hasAnyAuthority(anyAuthority)

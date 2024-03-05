@@ -58,4 +58,8 @@ public class LoginService {
                 .map(loginMapper::toLoginDTO)
                 .orElseThrow(() -> new RuntimeException("Cannot find login with requested id!"));
     }
+
+    public Login findByLogin(String login) {
+        return loginRepository.findLoginByLogin(login).orElseThrow();
+    }
 }
