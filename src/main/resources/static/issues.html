@@ -14,6 +14,7 @@
 </style>
 <body>
 <h2>Issues</h2>
+<a href="#" id="welcomeLink">Welcome Page</a>
 <div id="errorMessage" style="color: red; font-weight: bold; text-align: center;"></div>
 <table class="table align-middle mb-0 bg-white">
     <thead class="bg-light">
@@ -159,7 +160,7 @@
                 if (issue.commentIds && issue.commentIds.length > 0) {
                     const commentsButton = document.createElement('button');
                     commentsButton.textContent = 'View Comments';
-                    commentsButton.addEventListener('click', function() {
+                    commentsButton.addEventListener('click', function () {
                         window.location.href = `/issue-comments.html?issueId=${issue.issueId}`;
                     });
                     commentsCell.appendChild(commentsButton);
@@ -192,18 +193,18 @@
                 const actionCell = document.createElement('td');
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
-                deleteButton.addEventListener('click', function() {
+                deleteButton.addEventListener('click', function () {
                     deleteIssue(issue.issueId);
                 });
                 actionCell.appendChild(deleteButton);
 
                 const updateIssueCell = document.createElement('td');
-                    const updateIssueButton = document.createElement('button');
-                    updateIssueButton.textContent = 'Update issue';
-                    updateIssueButton.addEventListener('click', function() {
-                        window.location.href = `/update-issue.html?issueId=${issue.issueId}`;
-                    });
-                    updateIssueCell.appendChild(updateIssueButton);
+                const updateIssueButton = document.createElement('button');
+                updateIssueButton.textContent = 'Update issue';
+                updateIssueButton.addEventListener('click', function () {
+                    window.location.href = `/update-issue.html?issueId=${issue.issueId}`;
+                });
+                updateIssueCell.appendChild(updateIssueButton);
                 row.appendChild(updateIssueCell);
                 row.appendChild(actionCell);
 
@@ -233,6 +234,5 @@
             });
     }
 </script>
-<a href="#" id="welcomeLink">Welcome Page</a>
 </body>
 </html>

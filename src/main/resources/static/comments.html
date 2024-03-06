@@ -11,6 +11,7 @@
         background-color: lightgray;
         font-family: Arial, "Arial Black", serif;
     }
+
     #overlay {
         display: none;
         position: fixed;
@@ -22,6 +23,7 @@
         background-color: rgba(0, 0, 0, 0.7);
         text-align: center;
     }
+
     #overlayImage {
         max-width: 80%;
         max-height: 80%;
@@ -31,6 +33,7 @@
 </style>
 <body>
 <h2>Comments</h2>
+<a href="#" id="welcomeLink">Welcome Page</a>
 <div id="errorMessage" style="color: red; font-weight: bold; text-align: center;"></div>
 <table class="table align-middle mb-0 bg-white">
     <thead class="bg-light">
@@ -163,7 +166,7 @@
                 const actionCell = document.createElement('td');
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
-                deleteButton.addEventListener('click', function() {
+                deleteButton.addEventListener('click', function () {
                     deleteComment(comment.commentId);
                 });
                 actionCell.appendChild(deleteButton);
@@ -208,6 +211,5 @@
 
     document.getElementById('overlay').addEventListener('click', closeOverlay);
 </script>
-<a href="#" id="welcomeLink">Welcome Page</a>
 </body>
 </html>

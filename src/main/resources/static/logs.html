@@ -14,23 +14,24 @@
 </style>
 <body>
 <h2>Logs</h2>
+<a href="#" id="welcomeLink">Welcome Page</a>
 <div id="errorMessage" style="color: red; font-weight: bold; text-align: center;"></div>
 <table class="table align-middle mb-0 bg-white">
     <thead class="bg-light">
     <tr>
-        <th>IssueLog Id</th>
-        <th>Person</th>
-        <th>Issue</th>
-        <th>Old status</th>
-        <th>New status</th>
-        <th>Log date</th>
+        <th>EventLog Id</th>
+        <th>Ip Address</th>
+        <th>Request Method</th>
+        <th>Request Uri</th>
+        <th>User</th>
+        <th>Request Timestamp</th>
     </tr>
     </thead>
-    <tbody id="issueLogsTableBody"></tbody>
+    <tbody id="logsTableBody"></tbody>
 </table>
 
 <script>
-    fetch('/bugtracker/issue-logs/all')
+    fetch('/tracking/events')
         .then(response => {
             if (response.status === 403) {
                 throw new Error('No access');
@@ -40,70 +41,36 @@
             return response.json();
         })
         .then(data => {
-            const issueLogsTableBody = document.getElementById('issueLogsTableBody');
+            const logsTableBody = document.getElementById('logsTableBody');
 
-            data.forEach(issueLog => {
+            data.forEach(event => {
                 const row = document.createElement('tr');
 
-                const issueLogsId = document.createElement('td');
-                issueLogsId.textContent = issueLog.issueLogId;
-                row.appendChild(issueLogsId);
+                const eventIdCell = document.createElement('td');
+                eventIdCell.textContent = event.eventId;
+                row.appendChild(eventIdCell);
 
-                const personIdCell = document.createElement('td');
-                if (issueLog.personId !== null) {
-                    fetch(`/bugtracker/persons/${issueLog.personId}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(personData => {
-                            personIdCell.textContent = personData.name;
-                        })
-                        .catch(error => {
-                            console.error('There was an error fetching person data:', error);
-                            personIdCell.textContent = 'Error fetching person name';
-                        });
-                } else {
-                    personIdCell.textContent = 'no person';
-                }
-                row.appendChild(personIdCell);
+                const ipAddressCell = document.createElement('td');
+                ipAddressCell.textContent = event.ipAddress;
+                row.appendChild(ipAddressCell);
 
-                const issueIdCell = document.createElement('td');
-                if (issueLog.issueId !== null) {
-                    fetch(`/bugtracker/issues/${issueLog.issueId}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(issueData => {
-                            issueIdCell.textContent = issueData.code;
-                        })
-                        .catch(error => {
-                            console.error('There was an error fetching issue data:', error);
-                            issueIdCell.textContent = 'Error fetching issue code';
-                        });
-                } else {
-                    issueIdCell.textContent = 'no issue';
-                }
-                row.appendChild(issueIdCell);
+                const requestMethodCell = document.createElement('td');
+                requestMethodCell.textContent = event.requestMethod;
+                row.appendChild(requestMethodCell);
 
-                const oldStatusCell = document.createElement('td');
-                oldStatusCell.textContent = issueLog.oldStatus;
-                row.appendChild(oldStatusCell);
+                const requestUriCell = document.createElement('td');
+                requestUriCell.textContent = event.requestUri;
+                row.appendChild(requestUriCell);
 
-                const newStatusCell = document.createElement('td');
-                newStatusCell.textContent = issueLog.newStatus;
-                row.appendChild(newStatusCell);
+                const userCell = document.createElement('td');
+                userCell.textContent = event.user;
+                row.appendChild(userCell);
 
-                const logDateCell = document.createElement('td');
-                logDateCell.textContent = issueLog.logDate;
-                row.appendChild(logDateCell);
+                const requestTimestampCell = document.createElement('td');
+                requestTimestampCell.textContent = event.requestTimestamp;
+                row.appendChild(requestTimestampCell);
 
-                issueLogsTableBody.appendChild(row);
+                logsTableBody.appendChild(row);
             });
         })
         .catch(error => {
@@ -112,6 +79,5 @@
             console.error('An error occurred while fetching data:', error);
         });
 </script>
-<a href="#" id="welcomeLink">Welcome Page</a>
 </body>
 </html>

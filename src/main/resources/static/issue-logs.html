@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Issue Logs</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <script src="navigation.js"></script>
+</head>
+<style>
+    body {
+        background-color: lightgray;
+        font-family: Arial, "Arial Black", serif;
+    }
+</style>
+<body>
+<h2>Issue Logs</h2>
+<a href="#" id="welcomeLink">Welcome Page</a>
+<div id="errorMessage" style="color: red; font-weight: bold; text-align: center;"></div>
+<table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+    <tr>
+        <th>IssueLog Id</th>
+        <th>Person</th>
+        <th>Issue</th>
+        <th>Old status</th>
+        <th>New status</th>
+        <th>Log date</th>
+    </tr>
+    </thead>
+    <tbody id="issueLogsTableBody"></tbody>
+</table>
+
+<script>
+    fetch('/bugtracker/issue-logs/all')
+        .then(response => {
+            if (response.status === 403) {
+                throw new Error('No access');
+            } else if (!response.ok) {
+                throw new Error('An error occurred: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const issueLogsTableBody = document.getElementById('issueLogsTableBody');
+
+            data.forEach(issueLog => {
+                const row = document.createElement('tr');
+
+                const issueLogsId = document.createElement('td');
+                issueLogsId.textContent = issueLog.issueLogId;
+                row.appendChild(issueLogsId);
+
+                const personIdCell = document.createElement('td');
+                if (issueLog.personId !== null) {
+                    fetch(`/bugtracker/persons/${issueLog.personId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(personData => {
+                            personIdCell.textContent = personData.name;
+                        })
+                        .catch(error => {
+                            console.error('There was an error fetching person data:', error);
+                            personIdCell.textContent = 'Error fetching person name';
+                        });
+                } else {
+                    personIdCell.textContent = 'no person';
+                }
+                row.appendChild(personIdCell);
+
+                const issueIdCell = document.createElement('td');
+                if (issueLog.issueId !== null) {
+                    fetch(`/bugtracker/issues/${issueLog.issueId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(issueData => {
+                            issueIdCell.textContent = issueData.code;
+                        })
+                        .catch(error => {
+                            console.error('There was an error fetching issue data:', error);
+                            issueIdCell.textContent = 'Error fetching issue code';
+                        });
+                } else {
+                    issueIdCell.textContent = 'no issue';
+                }
+                row.appendChild(issueIdCell);
+
+                const oldStatusCell = document.createElement('td');
+                oldStatusCell.textContent = issueLog.oldStatus;
+                row.appendChild(oldStatusCell);
+
+                const newStatusCell = document.createElement('td');
+                newStatusCell.textContent = issueLog.newStatus;
+                row.appendChild(newStatusCell);
+
+                const logDateCell = document.createElement('td');
+                logDateCell.textContent = issueLog.logDate;
+                row.appendChild(logDateCell);
+
+                issueLogsTableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = error.message;
+            console.error('An error occurred while fetching data:', error);
+        });
+</script>
+</body>
+</html>

@@ -1,95 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Authorities</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
-  <script src="navigation.js"></script>
+    <meta charset="UTF-8">
+    <title>Authorities</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <script src="navigation.js"></script>
 </head>
 <style>
-  body {
-    background-color: lightgray;
-    font-family: Arial, "Arial Black", serif;
-  }
+    body {
+        background-color: lightgray;
+        font-family: Arial, "Arial Black", serif;
+    }
 </style>
 <body>
 <h2>Authorities</h2>
+<a href="#" id="welcomeLink">Welcome Page</a>
 <div id="errorMessage" style="color: red; font-weight: bold; text-align: center;"></div>
 <table class="table align-middle mb-0 bg-white">
-  <thead class="bg-light">
-  <tr>
-    <th>Authority Id</th>
-    <th>Name</th>
-    <th>Deleted</th>
-    <th>Action</th>
-  </tr>
-  </thead>
-  <tbody id="authorityTableBody"></tbody>
+    <thead class="bg-light">
+    <tr>
+        <th>Authority Id</th>
+        <th>Name</th>
+        <th>Deleted</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody id="authorityTableBody"></tbody>
 </table>
 
 <script>
-  fetch('/bugtracker/authorities/all')
-          .then(response => {
+    fetch('/bugtracker/authorities/all')
+        .then(response => {
             if (response.status === 403) {
-              throw new Error('No access');
+                throw new Error('No access');
             } else if (!response.ok) {
-              throw new Error('An error occurred: ' + response.status);
+                throw new Error('An error occurred: ' + response.status);
             }
             return response.json();
-          })
-          .then(data => {
+        })
+        .then(data => {
             const authorityTableBody = document.getElementById('authorityTableBody');
 
             data.forEach(authority => {
-              const row = document.createElement('tr');
+                const row = document.createElement('tr');
 
-              const authorityIdCell = document.createElement('td');
-              authorityIdCell.textContent = authority.authorityId;
-              row.appendChild(authorityIdCell);
+                const authorityIdCell = document.createElement('td');
+                authorityIdCell.textContent = authority.authorityId;
+                row.appendChild(authorityIdCell);
 
-              const nameCell = document.createElement('td');
-              nameCell.textContent = authority.name;
-              row.appendChild(nameCell);
+                const nameCell = document.createElement('td');
+                nameCell.textContent = authority.name;
+                row.appendChild(nameCell);
 
-              const deletedCell = document.createElement('td');
-              deletedCell.textContent = authority.deleted;
-              row.appendChild(deletedCell);
+                const deletedCell = document.createElement('td');
+                deletedCell.textContent = authority.deleted;
+                row.appendChild(deletedCell);
 
-              const actionCell = document.createElement('td');
-              const deleteButton = document.createElement('button');
-              deleteButton.textContent = 'Delete';
-              deleteButton.addEventListener('click', function() {
-                deleteAuthority(authority.authorityId);
-              });
-              actionCell.appendChild(deleteButton);
-              row.appendChild(actionCell);
+                const actionCell = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', function () {
+                    deleteAuthority(authority.authorityId);
+                });
+                actionCell.appendChild(deleteButton);
+                row.appendChild(actionCell);
 
-              authorityTableBody.appendChild(row);
+                authorityTableBody.appendChild(row);
             });
-          })
-          .catch(error => {
+        })
+        .catch(error => {
             const errorMessage = document.getElementById('errorMessage');
             errorMessage.textContent = error.message;
             console.error('An error occurred while fetching data:', error);
-          });
+        });
 
-  function deleteAuthority(authorityId) {
-    fetch(`/bugtracker/authorities/${authorityId}`, {
-      method: 'DELETE'
-    })
+    function deleteAuthority(authorityId) {
+        fetch(`/bugtracker/authorities/${authorityId}`, {
+            method: 'DELETE'
+        })
             .then(response => {
-              if (!response.ok) {
-                throw new Error('An error occurred: ' + response.status);
-              }
-              console.log('Authority deleted successfully.');
+                if (!response.ok) {
+                    throw new Error('An error occurred: ' + response.status);
+                }
+                console.log('Authority deleted successfully.');
             })
             .catch(error => {
-              const errorMessage = document.getElementById('errorMessage');
-              errorMessage.textContent = error.message;
-              console.error('An error occurred while deleting authority:', error);
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = error.message;
+                console.error('An error occurred while deleting authority:', error);
             });
-  }
+    }
 </script>
-<a href="#" id="welcomeLink">Welcome Page</a>
 </body>
 </html>

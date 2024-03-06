@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("welcomeLink").addEventListener("click", function(event) {
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("welcomeLink").addEventListener("click", function (event) {
         event.preventDefault();
 
         fetch("/bugtracker/default-authority")
@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     window.location.href = "/admin-panel.html";
                 } else if (authority.trim() === "USER") {
                     window.location.href = "/user-panel.html";
+                } else if (authority.trim() === "TECHNICIAN") {
+                    window.location.href = "/technician-panel.html";
                 } else {
                     console.error("Unknown authority:", authority);
                 }

@@ -19,11 +19,26 @@
             height: 100vh !important;
         }
     }
+
     @media (min-width: 769px) {
         .gradient-custom-2 {
             border-top-right-radius: .3rem;
             border-bottom-right-radius: .3rem;
         }
+    }
+
+    .card {
+        width: 600px !important;
+    }
+
+    .col-lg-6 {
+        max-width: 100% !important;
+    }
+
+    .col-xl-10 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 </style>
 <body>
@@ -32,40 +47,44 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-xl-10">
                 <div class="card rounded-3 text-black">
-                    <div class="row g-0">
-                        <div class="col-lg-6">
-                            <div class="card-body p-md-5 mx-md-4">
+                    <div class="col-lg-6">
+                        <div class="card-body p-md-5 mx-md-4">
 
-                                <div class="text-center">
-                                    <h4 class="mt-1 mb-5 pb-1">Bugtracker</h4>
+                            <div class="text-center">
+                                <h4 class="mt-1 mb-5 pb-1">Add Login</h4>
+                            </div>
+
+                            <form id="loginForm" method="post" action="/add-login">
+                                <div id="formError" class="alert alert-danger d-none" role="alert">
+                                    Error occurred while creating login. Please try again.
+                                </div>
+                                <p>Please create login to your account</p>
+
+                                <div class="form-outline mb-4"> Username
+                                    <label for="username" class="sr-only">Username</label>
+                                    <input type="text" id="username" name="login" class="form-control"
+                                           placeholder="Username" required autofocus>
                                 </div>
 
-                                <form id="loginForm" method="post" action="/add-login">
-                                    <div id="formError" class="alert alert-danger d-none" role="alert">
-                                        Error occurred while creating login. Please try again.
-                                    </div>
-                                        <p>Please create login to your account</p>
+                                <div class="form-outline mb-4"> Password
+                                    <label for="password" class="sr-only">Password</label>
+                                    <input type="password" id="password" name="password" class="form-control"
+                                           placeholder="Password" required>
+                                </div>
 
-                                        <div class="form-outline mb-4"> Username
-                                            <label for="username" class="sr-only">Username</label>
-                                            <input type="text" id="username" name="login" class="form-control" placeholder="Username" required autofocus>
-                                        </div>
+                                <div class="form-outline mb-4"> Email
+                                    <label for="email" class="sr-only">Email</label>
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Email"
+                                           required>
+                                </div>
 
-                                        <div class="form-outline mb-4"> Password
-                                            <label for="password" class="sr-only">Password</label>
-                                            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-                                        </div>
-
-                                        <div class="form-outline mb-4"> Email
-                                            <label for="email" class="sr-only">Email</label>
-                                            <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
-                                        </div>
-
-                                        <div class="text-center pt-1 mb-5 pb-1">
-                                            <button id="submitButton" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Create</button>
-                                        </div>
-                                </form>
-                            </div>
+                                <div class="text-center pt-1 mb-5 pb-1">
+                                    <button id="submitButton"
+                                            class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
+                                            type="submit">Create
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -74,12 +93,12 @@
     </div>
 </section>
 <script>
-    document.getElementById("submitButton").addEventListener("click", function() {
+    document.getElementById("submitButton").addEventListener("click", function () {
         var form = document.getElementById("loginForm");
         var formData = new FormData(form);
         var jsonData = {};
 
-        formData.forEach(function(value, key){
+        formData.forEach(function (value, key) {
             jsonData[key] = value;
         });
 
